@@ -8,6 +8,9 @@ function isProtectedPath(pathname: string): boolean {
 }
 
 export default {
+  // Vercel meneruskan host asli melalui proxy headers. Auth.js harus
+  // mempercayainya agar callback production tidak kembali ke localhost.
+  trustHost: true,
   session: {
     strategy: 'jwt',
     maxAge: env.AUTH_SESSION_MAX_AGE,

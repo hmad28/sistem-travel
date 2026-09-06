@@ -97,6 +97,8 @@ Atau jalankan semuanya dengan `pnpm verify`. Untuk perubahan database, jalankan 
 ## Deploy ke Vercel
 
 1. Buat proyek Neon dan pasang semua environment variables di Vercel.
+   `AUTH_URL` dan `NEXT_PUBLIC_APP_URL` wajib memakai domain HTTPS deployment,
+   bukan `http://localhost:3000`. Tambahkan juga `AUTH_TRUST_HOST=true`.
 2. Jalankan `pnpm db:migrate` dan `pnpm db:seed` dari lingkungan aman.
 3. Gunakan build command `pnpm build` dan deploy.
 4. Tambahkan `UPLOADTHING_TOKEN` untuk upload serta kredensial Resend untuk email nyata.
