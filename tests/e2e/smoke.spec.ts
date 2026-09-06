@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test';
 
-test('home page links to dashboard', async ({ page }) => {
+test('halaman publik menampilkan identitas dan paket Hammad Tour', async ({ page }) => {
   await page.goto('/');
 
-  await expect(
-    page.getByText("ForgeStart, Next.js uygulamanın ihtiyaç duyduğu üretim parçalarıyla gelir.")
-  ).toBeVisible();
-  await expect(page.getByRole('link', { name: /Panoyu aç/ })).toHaveAttribute(
+  await expect(page.getByRole('heading', { name: /Ibadah lebih tenang/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Umrah Syawal 9 Hari/i }).first()).toBeVisible();
+  await expect(page.getByRole('link', { name: /Konsultasi Gratis/i })).toHaveAttribute(
     'href',
-    '/dashboard'
+    /wa\.me/
   );
+  await expect(page.getByText(/Powered by/i)).toBeVisible();
 });
