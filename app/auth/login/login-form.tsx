@@ -90,15 +90,6 @@ export default function LoginForm() {
           {t('forgotPassword')}
         </Link>
       </p>
-      <p className="text-center text-sm text-muted-foreground">
-        {t('noAccount')}{' '}
-        <Link
-          href="/auth/register"
-          className="font-medium text-foreground underline-offset-4 hover:underline"
-        >
-          {t('registerLink')}
-        </Link>
-      </p>
     </Form>
   );
 }

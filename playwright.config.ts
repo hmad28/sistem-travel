@@ -33,7 +33,7 @@ export default defineConfig({
   webServer: process.env.PLAYWRIGHT_SKIP_WEBSERVER
     ? undefined
     : {
-        command: 'yarn dev',
+        command: 'pnpm dev',
         url: baseURL,
         reuseExistingServer: true,
         timeout: 120_000,

@@ -40,17 +40,17 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,var(--accent),transparent_28rem),var(--background)]">
+    <div className="min-h-screen bg-[#f4f6f5] dark:bg-background">
       <Sidebar collapsed={collapsed} branding={branding} />
       <div
         className={cn(
           'min-h-screen transition-[padding] duration-200',
-          collapsed ? 'lg:pl-20' : 'lg:pl-72'
+        collapsed ? 'lg:pl-20' : 'lg:pl-64'
         )}
       >
         <Navbar collapsed={collapsed} setCollapsed={setCollapsed} branding={branding} />
-        <main className="px-4 py-6 sm:px-6 lg:px-8">
-          <div className="mx-auto flex max-w-7xl flex-col gap-6">
+        <main className="px-4 py-6 sm:px-6 lg:px-7 lg:py-7">
+          <div className="mx-auto flex max-w-[1440px] flex-col gap-6">
             <VerifyEmailBanner />
             {children}
           </div>

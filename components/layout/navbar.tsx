@@ -14,6 +14,7 @@ import {
   UsersRoundIcon,
   WalletCardsIcon,
   PlaneTakeoffIcon,
+  SearchIcon,
 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -44,7 +45,7 @@ function buildInitials(firstName?: string | null, lastName?: string | null, emai
   return email?.slice(0, 2).toUpperCase() ?? 'FS';
 }
 
-export default function Navbar({ collapsed, setCollapsed, branding }: NavbarProps) {
+export default function Navbar({ collapsed, setCollapsed }: NavbarProps) {
   const { data: session } = useSession();
   const { isDark, toggleTheme } = useTheme();
   const t = useTranslations('userMenu');
@@ -53,8 +54,8 @@ export default function Navbar({ collapsed, setCollapsed, branding }: NavbarProp
   const fullName = [user?.firstName, user?.lastName].filter(Boolean).join(' ');
 
   return (
-    <header className="sticky top-0 z-20 border-b bg-background/85 backdrop-blur-xl">
-      <div className="flex h-16 items-center justify-between gap-4 px-4 lg:px-8">
+    <header className="sticky top-0 z-20 border-b bg-white/95 backdrop-blur-xl dark:bg-background/90">
+      <div className="flex h-[76px] items-center justify-between gap-4 px-4 lg:px-7">
         <div className="flex items-center gap-2">
           <Button
             variant="ghost"
@@ -98,15 +99,10 @@ export default function Navbar({ collapsed, setCollapsed, branding }: NavbarProp
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <div className="min-w-0">
-            <p className="text-sm font-semibold leading-none">{branding.name}</p>
-            <p className="mt-1 hidden text-xs text-muted-foreground sm:block">
-              {tNav('topbarTagline')}
-            </p>
-          </div>
+          <label className="ml-1 hidden h-11 w-[min(38vw,420px)] items-center gap-3 rounded-lg border bg-[#f7f8f7] px-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/15 md:flex"><SearchIcon className="size-4 text-muted-foreground" /><span className="sr-only">Cari data</span><input className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground" placeholder="Cari jamaah, invoice, atau paket…" /></label>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <LanguageSwitcher />
           <Button
             variant="ghost"

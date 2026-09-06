@@ -1,106 +1,53 @@
-import {
-  ArrowRight,
-  CalendarDays,
-  FileWarning,
-  MessageCircle,
-  PackagePlus,
-  ReceiptText,
-  UserPlus,
-  UsersRound,
-  WalletCards,
-} from 'lucide-react';
+import { AlertTriangle, ArrowRight, CalendarDays, ChevronRight, CircleCheck, FileWarning, MessageCircle, Plus, ReceiptText, UserPlus, UsersRound, WalletCards } from 'lucide-react';
 import { PageShell } from '@/components/layout';
 import { Link } from '@/i18n/navigation';
 import { requireOrganizationContext } from '@/lib/auth/organization-context';
 import { getDashboardData } from '@/lib/travel/dashboard-data';
-import {
-  formatCompactIdr,
-  formatIndonesianDate,
-  parseDatabaseDate,
-} from '@/lib/travel/format';
-
-const actions = [
-  { label: 'Tambah jamaah', detail: 'Masukkan data jamaah baru', href: '/travel/jamaah', icon: UserPlus },
-  { label: 'Buat pendaftaran', detail: 'Pilih paket dan keberangkatan', href: '/travel/keberangkatan', icon: PackagePlus },
-  { label: 'Catat pembayaran', detail: 'Simpan pembayaran dan kwitansi', href: '/travel/pembayaran', icon: ReceiptText },
-];
+import { formatCompactIdr, formatIndonesianDate, parseDatabaseDate } from '@/lib/travel/format';
 
 export default async function DashboardPage() {
   const { organizationId } = await requireOrganizationContext();
   const data = await getDashboardData(organizationId);
   const nearest = data.nearestDeparture;
-  const seatPercentage = nearest?.quota
-    ? Math.min(100, Math.round((nearest.confirmedSeats / nearest.quota) * 100))
-    : 0;
+  const seatPercentage = nearest?.quota ? Math.min(100, Math.round((nearest.confirmedSeats / nearest.quota) * 100)) : 0;
   const stats = [
-    {
-      label: 'Jamaah aktif',
-      value: data.pilgrims.toLocaleString('id-ID'),
-      detail: `${data.activeDepartures} keberangkatan aktif`,
-      icon: UsersRound,
-    },
-    {
-      label: 'Total tagihan',
-      value: formatCompactIdr.format(data.finance.total),
-      detail: `${formatCompactIdr.format(data.finance.paid)} sudah diterima`,
-      icon: ReceiptText,
-    },
-    {
-      label: 'Sisa tagihan',
-      value: formatCompactIdr.format(data.finance.outstanding),
-      detail: `${data.finance.unpaidPilgrims} jamaah perlu dihubungi`,
-      icon: WalletCards,
-    },
-    {
-      label: 'Kesiapan dokumen',
-      value: `${data.documents.percentage}%`,
-      detail: `${data.documents.incomplete} dokumen perlu dilengkapi`,
-      icon: FileWarning,
-    },
-  ];
+    ['Jamaah aktif', data.pilgrims.toLocaleString('id-ID'), `${data.activeDepartures} keberangkatan aktif`, UsersRound],
+    ['Tagihan berjalan', formatCompactIdr.format(data.finance.total), `${formatCompactIdr.format(data.finance.paid)} sudah diterima`, ReceiptText],
+    ['Piutang jamaah', formatCompactIdr.format(data.finance.outstanding), `${data.finance.unpaidPilgrims} jamaah belum lunas`, WalletCards],
+    ['Dokumen lengkap', `${data.documents.percentage}%`, `${data.documents.incomplete} berkas perlu dicek`, FileWarning],
+  ] as const;
   const work = [
-    {
-      tone: 'bg-amber-500',
-      title: `${data.finance.unpaidPilgrims} jamaah belum melunasi`,
-      detail: `Sisa tagihan ${formatCompactIdr.format(data.finance.outstanding)}`,
-      href: '/travel/pembayaran',
-    },
-    {
-      tone: 'bg-rose-500',
-      title: `${data.documents.incomplete} dokumen belum lengkap`,
-      detail: 'Periksa dokumen sebelum batas pengumpulan',
-      href: '/travel/operasional',
-    },
-    {
-      tone: 'bg-emerald-500',
-      title: nearest ? 'Keberangkatan terdekat' : 'Belum ada keberangkatan aktif',
-      detail: nearest
-        ? `${nearest.packageName} · ${nearest.confirmedSeats} dari ${nearest.quota} kursi`
-        : 'Buat jadwal keberangkatan untuk mulai menerima jamaah',
-      href: '/travel/keberangkatan',
-    },
+    { icon: WalletCards, title: 'Konfirmasi pembayaran jamaah', count: data.finance.unpaidPilgrims, detail: `${formatCompactIdr.format(data.finance.outstanding)} belum diterima`, href: '/travel/pembayaran', tone: 'text-amber-700 bg-amber-50' },
+    { icon: FileWarning, title: 'Lengkapi dokumen keberangkatan', count: data.documents.incomplete, detail: 'Paspor, foto, atau berkas pendukung belum lengkap', href: '/travel/operasional', tone: 'text-rose-700 bg-rose-50' },
+    { icon: CircleCheck, title: 'Data jamaah siap diperiksa', count: data.pilgrims, detail: 'Pastikan biodata sesuai dokumen asli', href: '/travel/jamaah', tone: 'text-emerald-700 bg-emerald-50' },
   ];
 
   return (
-    <PageShell title="Ringkasan hari ini" description="Yang perlu dikerjakan tampil lebih dulu. Pilih satu pekerjaan untuk mulai.">
-      <section aria-labelledby="quick-actions">
-        <h2 id="quick-actions" className="text-lg font-bold">Mulai pekerjaan</h2>
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          {actions.map((item) => { const Icon = item.icon; return <Link key={item.label} href={item.href} className="group flex min-h-24 items-center gap-4 rounded-xl border bg-card p-5 shadow-sm transition-[border-color,transform] hover:-translate-y-0.5 hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"><span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary text-primary-foreground"><Icon className="size-6" aria-hidden="true" /></span><span className="min-w-0"><strong className="block text-base">{item.label}</strong><small className="mt-1 block text-sm leading-5 text-muted-foreground">{item.detail}</small></span><ArrowRight className="ml-auto size-5 text-muted-foreground transition-transform group-hover:translate-x-1" aria-hidden="true" /></Link>; })}
+    <PageShell title="Selamat pagi, Admin" description="Berikut kondisi operasional Hammad Tour hari ini." actions={<div className="flex gap-2"><Link href="/travel/jamaah/baru" className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-primary-foreground"><UserPlus className="size-4" /> Tambah jamaah</Link><Link href="/travel/pembayaran" className="hidden min-h-11 items-center gap-2 rounded-lg border bg-white px-4 text-sm font-bold sm:inline-flex"><Plus className="size-4" /> Catat pembayaran</Link></div>}>
+      <section className="grid overflow-hidden rounded-xl border bg-white shadow-[0_2px_8px_rgba(25,52,47,.04)] sm:grid-cols-2 xl:grid-cols-4" aria-label="Ringkasan bisnis">
+        {stats.map(([label, value, detail, Icon], index) => <article key={label} className={`p-5 ${index ? 'border-t sm:border-l sm:border-t-0' : ''} ${index === 2 ? 'sm:border-t xl:border-t-0' : ''}`}><div className="flex items-center justify-between"><p className="text-sm font-semibold text-muted-foreground">{label}</p><Icon className="size-5 text-primary" /></div><strong className="mt-3 block text-[28px] font-bold tabular-nums tracking-[-.03em]">{value}</strong><p className="mt-1 text-sm text-muted-foreground">{detail}</p></article>)}
+      </section>
+
+      <section className="grid gap-5 xl:grid-cols-[1.35fr_.65fr]">
+        <div className="overflow-hidden rounded-xl border bg-white shadow-[0_2px_8px_rgba(25,52,47,.04)]">
+          <header className="flex items-center justify-between border-b px-5 py-4"><div><h2 className="text-lg font-bold">Perlu dikerjakan</h2><p className="mt-0.5 text-sm text-muted-foreground">Urut dari yang paling mendesak</p></div><span className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-bold text-amber-800"><AlertTriangle className="size-4" /> {data.finance.unpaidPilgrims + data.documents.incomplete} tugas</span></header>
+          <div className="divide-y">{work.map((item) => <Link key={item.title} href={item.href} className="group grid min-h-[86px] grid-cols-[44px_1fr_auto] items-center gap-4 px-5 py-4 hover:bg-[#f7faf8]"><span className={`grid size-11 place-items-center rounded-lg ${item.tone}`}><item.icon className="size-5" /></span><span className="min-w-0"><strong className="block text-[15px]">{item.title}</strong><small className="mt-1 block truncate text-sm text-muted-foreground">{item.detail}</small></span><span className="flex items-center gap-4"><strong className="text-xl tabular-nums">{item.count}</strong><ChevronRight className="size-5 text-muted-foreground group-hover:translate-x-0.5" /></span></Link>)}</div>
+          <footer className="border-t bg-[#fafbfa] px-5 py-3"><Link href="/travel/operasional" className="inline-flex min-h-10 items-center gap-2 text-sm font-bold text-primary">Buka semua pekerjaan <ArrowRight className="size-4" /></Link></footer>
         </div>
+
+        <aside className="overflow-hidden rounded-xl bg-[#123f38] text-white shadow-[0_10px_30px_rgba(18,63,56,.18)]">
+          <div className="border-b border-white/10 p-5"><p className="flex items-center gap-2 text-xs font-extrabold tracking-[.12em] text-[#eed183]"><CalendarDays className="size-4" /> KEBERANGKATAN TERDEKAT</p><h2 className="mt-3 text-xl font-bold">{nearest?.packageName ?? 'Belum ada jadwal'}</h2><p className="mt-1 text-sm text-white/60">{nearest ? formatIndonesianDate.format(parseDatabaseDate(nearest.departureDate)) : 'Buat keberangkatan pertama'}</p></div>
+          <div className="p-5"><div className="flex items-end justify-between"><div><span className="text-sm text-white/60">Kursi terisi</span><strong className="mt-1 block text-3xl tabular-nums">{nearest?.confirmedSeats ?? 0}<small className="ml-1 text-base font-medium text-white/45">/{nearest?.quota ?? 0}</small></strong></div><strong className="text-[#eed183]">{seatPercentage}%</strong></div><div className="mt-4 h-2 overflow-hidden rounded-full bg-white/12"><div className="h-full rounded-full bg-[#e3bd5e]" style={{ width: `${seatPercentage}%` }} /></div>
+            <dl className="mt-6 grid grid-cols-2 gap-3"><div className="rounded-lg bg-white/[.07] p-3"><dt className="text-xs text-white/50">Dokumen siap</dt><dd className="mt-1 text-lg font-bold">{data.documents.percentage}%</dd></div><div className="rounded-lg bg-white/[.07] p-3"><dt className="text-xs text-white/50">Status</dt><dd className="mt-1 text-lg font-bold">Aktif</dd></div></dl>
+            <Link href="/travel/operasional" className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-white font-bold text-[#123f38]">Buka pusat operasional <ArrowRight className="size-4" /></Link>
+          </div>
+        </aside>
       </section>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4" aria-label="Ringkasan bisnis">
-        {stats.map((item) => { const Icon = item.icon; return <article key={item.label} className="rounded-xl border bg-card p-5 shadow-sm"><div className="flex items-center justify-between gap-4"><p className="text-[15px] font-semibold text-muted-foreground">{item.label}</p><Icon className="size-5 text-primary" aria-hidden="true" /></div><strong className="mt-4 block text-3xl font-bold tabular-nums tracking-tight">{item.value}</strong><small className="mt-2 block text-sm leading-5 text-muted-foreground">{item.detail}</small></article>; })}
+      <section className="grid gap-5 lg:grid-cols-[1fr_320px]">
+        <div className="rounded-xl border bg-white p-5"><div className="flex items-center justify-between"><div><h2 className="text-lg font-bold">Akses cepat</h2><p className="mt-1 text-sm text-muted-foreground">Pekerjaan yang paling sering dilakukan</p></div></div><div className="mt-4 grid gap-3 sm:grid-cols-3">{[[UserPlus, 'Data jamaah', 'Cari atau tambah jamaah', '/travel/jamaah'], [CalendarDays, 'Jadwal berangkat', 'Atur paket dan kuota', '/travel/keberangkatan'], [ReceiptText, 'Pembayaran', 'Tagihan dan kwitansi', '/travel/pembayaran']].map(([Icon, title, detail, href]) => { const QuickIcon = Icon as typeof UserPlus; return <Link key={title as string} href={href as string} className="flex min-h-20 items-center gap-3 rounded-lg border p-4 hover:border-primary/40 hover:bg-accent/30"><QuickIcon className="size-5 shrink-0 text-primary" /><span><strong className="block text-sm">{title as string}</strong><small className="mt-1 block text-xs text-muted-foreground">{detail as string}</small></span></Link>; })}</div></div>
+        <div className="flex items-center gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-950"><span className="grid size-11 shrink-0 place-items-center rounded-full bg-emerald-700 text-white"><MessageCircle className="size-5" /></span><div><strong className="block text-sm">Hubungi jamaah</strong><a href="https://wa.me/6281234567890" className="mt-1 inline-flex items-center gap-1 text-sm font-bold text-emerald-800">Buka WhatsApp <ArrowRight className="size-4" /></a></div></div>
       </section>
-
-      <section className="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
-        <div className="rounded-xl border bg-card shadow-sm"><header className="border-b p-5"><p className="text-sm font-bold tracking-[.12em] text-primary">PERLU DITINDAKLANJUTI</p><h2 className="mt-2 text-xl font-bold">Pekerjaan penting</h2></header><div className="divide-y">{work.map((item) => <Link key={item.title} href={item.href} className="flex min-h-24 items-center gap-4 p-5 hover:bg-muted/50"><span className={`size-3 shrink-0 rounded-full ${item.tone.split(' ')[0]}`} /><span className="min-w-0"><strong className="block text-base">{item.title}</strong><small className="mt-1 block text-sm leading-5 text-muted-foreground">{item.detail}</small></span><ArrowRight className="ml-auto size-5 text-muted-foreground" aria-hidden="true" /></Link>)}</div></div>
-
-        <div className="rounded-xl bg-[#103f39] p-6 text-white shadow-sm"><CalendarDays className="size-8 text-[#ecd28d]" aria-hidden="true" /><p className="mt-7 text-sm font-bold tracking-[.12em] text-[#ecd28d]">{nearest ? formatIndonesianDate.format(parseDatabaseDate(nearest.departureDate)).toLocaleUpperCase('id-ID') : 'BELUM DIJADWALKAN'}</p><h2 className="mt-2 text-2xl font-bold">{nearest?.packageName ?? 'Buat keberangkatan pertama'}</h2><p className="mt-3 text-base leading-7 text-white/70">{nearest ? `${nearest.confirmedSeats} dari ${nearest.quota} kursi sudah terisi. Kesiapan dokumen seluruh jamaah ${data.documents.percentage}%.` : 'Pilih paket, tanggal, dan kuota. Sistem akan membantu memantau kesiapan jamaah.'}</p><div className="mt-6 h-3 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-label="Kursi terisi" aria-valuenow={seatPercentage} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-[#ecd28d]" style={{ width: `${seatPercentage}%` }} /></div><Link href="/travel/operasional" className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-lg bg-white px-5 font-bold text-[#103f39]">Buka pusat keberangkatan <ArrowRight className="size-5" /></Link></div>
-      </section>
-
-      <section className="flex flex-col gap-4 rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-950 sm:flex-row sm:items-center sm:justify-between"><div><h2 className="font-bold">Butuh menghubungi jamaah?</h2><p className="mt-1 text-sm leading-6 text-emerald-800">Gunakan WhatsApp untuk mengirim pengingat pembayaran atau dokumen.</p></div><a href="https://wa.me/6281234567890" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-emerald-800 px-5 font-bold text-white"><MessageCircle className="size-5" /> Buka WhatsApp</a></section>
     </PageShell>
   );
 }

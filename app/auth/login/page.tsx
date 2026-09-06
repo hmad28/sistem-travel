@@ -1,4 +1,6 @@
 import { getTranslations } from 'next-intl/server';
+import Image from 'next/image';
+import { BadgeCheck, CheckCircle2, Headphones } from 'lucide-react';
 import LoginForm from './login-form';
 import { BrandLogo } from '@/components/brand';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,42 +12,30 @@ export default async function LoginPage() {
   const [t, branding] = await Promise.all([getTranslations('auth'), loadAppBranding()]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,var(--accent),transparent_32rem),var(--background)] px-4 py-12">
-      <div className="grid w-full max-w-5xl overflow-hidden rounded-lg border bg-card shadow-sm md:grid-cols-[1fr_440px]">
-        <section className="hidden border-r bg-sidebar p-10 text-sidebar-foreground md:flex md:flex-col md:justify-between">
-          <div>
-            <BrandLogo logoUrl={branding.logoUrl} name={branding.name} className="size-10" />
-            <h1 className="mt-8 text-3xl font-semibold tracking-tight">{branding.name}</h1>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-sidebar-foreground/70">
-              {t('loginHeroDescription', { appName: branding.name })}
-            </p>
-          </div>
-          <div className="grid grid-cols-3 gap-3 text-xs">
-            {['Drizzle', 'Auth.js', 'Docker'].map((item) => (
-              <div
-                key={item}
-                className="rounded-lg border border-sidebar-border bg-sidebar-accent/50 p-3"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
+    <main className="grid min-h-screen bg-[#f3f5f3] lg:grid-cols-[1.05fr_.95fr]">
+      <section className="relative hidden min-h-screen overflow-hidden bg-[#082f2a] text-white lg:block">
+        <Image src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1600&q=85" alt="Masjidil Haram" fill priority sizes="55vw" className="object-cover" />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,31,27,.28),rgba(4,31,27,.92))]" />
+        <div className="relative flex h-full min-h-screen flex-col justify-between p-10 xl:p-14">
+          <div className="flex items-center gap-3"><BrandLogo logoUrl={branding.logoUrl} name={branding.name} className="size-11" /><div><strong className="block text-lg">{branding.name}</strong><span className="text-xs font-bold tracking-[.16em] text-[#ead080]">TOUR OPERATIONS</span></div></div>
+          <div className="max-w-xl pb-8"><p className="inline-flex items-center gap-2 text-sm font-bold text-[#ead080]"><BadgeCheck className="size-5" /> Sistem operasional travel terpadu</p><h1 className="mt-5 font-serif text-5xl font-semibold leading-tight">Layani jamaah dengan data yang lebih rapi.</h1><p className="mt-5 text-lg leading-8 text-white/70">Kelola pendaftaran, pembayaran, dokumen, dan kesiapan keberangkatan dalam satu tempat.</p><div className="mt-8 flex gap-6 text-sm font-semibold text-white/75"><span className="flex items-center gap-2"><CheckCircle2 className="size-5 text-[#ead080]" /> Mudah digunakan</span><span className="flex items-center gap-2"><Headphones className="size-5 text-[#ead080]" /> Bantuan tersedia</span></div></div>
+        </div>
         </section>
-
-        <section className="flex items-center justify-center p-6 sm:p-10">
-          <Card className="w-full max-w-sm border-0 bg-transparent shadow-none ring-0">
-            <CardHeader className="px-1">
-              <CardTitle className="text-2xl">{t('welcomeBackTitle')}</CardTitle>
-              <CardDescription>
+        <section className="flex min-h-screen items-center justify-center px-5 py-12 sm:px-10">
+          <Card className="w-full max-w-md border-0 bg-transparent shadow-none ring-0">
+            <CardHeader className="px-0 pb-7"><div className="mb-8 flex items-center gap-3 lg:hidden"><BrandLogo logoUrl={branding.logoUrl} name={branding.name} className="size-10" /><strong>{branding.name}</strong></div>
+              <p className="text-sm font-bold text-primary">AKSES STAF</p>
+              <CardTitle className="mt-2 text-3xl font-bold tracking-[-.03em]">{t('welcomeBackTitle')}</CardTitle>
+              <CardDescription className="mt-2 text-base leading-7">
                 {t('loginWorkspaceDescription', { appName: branding.name })}
               </CardDescription>
             </CardHeader>
-            <CardContent className="px-1">
+            <CardContent className="px-0">
               <LoginForm />
+              <div className="mt-8 border-t pt-5 text-center text-sm text-muted-foreground">Kesulitan masuk? Hubungi pemilik travel atau administrator.</div>
             </CardContent>
           </Card>
         </section>
-      </div>
     </main>
   );
 }

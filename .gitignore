@@ -47,6 +47,8 @@ next-env.d.ts
 /playwright-report
 /test-results
 /playwright/.auth
+/.playwright-cli
+/output/playwright
 
 # docker
 postgres-data
