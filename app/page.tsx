@@ -30,7 +30,7 @@ export default async function Home() {
   })) : demoPackages).map((item, index) => ({ ...item, image: packageImages[index % packageImages.length] }));
 
   return (
-    <main className="min-h-screen bg-[#f7f5ef] text-[#152b27]">
+    <main className="travel-public min-h-screen bg-[#f7f5ef] text-[#152b27]">
       <div className="bg-[#092f2a] text-white"><div className="mx-auto flex min-h-10 max-w-[1380px] items-center justify-between gap-4 px-5 text-sm lg:px-8"><p className="flex items-center gap-2 text-white/75"><ShieldCheck className="size-4 text-[#e1bd62]" /> Travel Umrah & Haji berizin resmi</p><p className="hidden text-white/65 md:block">Senin–Sabtu, 08.00–17.00 WIB · Jakarta</p></div></div>
       <header className="sticky top-0 z-40 border-b border-black/8 bg-[#f7f5ef]/95 backdrop-blur-xl">
         <div className="mx-auto flex min-h-[76px] max-w-[1380px] items-center justify-between gap-6 px-5 lg:px-8">

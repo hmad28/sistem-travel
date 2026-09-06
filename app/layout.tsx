@@ -1,10 +1,13 @@
 import type { Metadata } from 'next';
+import { Plus_Jakarta_Sans, Manrope } from 'next/font/google';
 import { getLocale, getMessages } from 'next-intl/server';
 import './globals.css';
 import { Providers } from './providers';
 import { loadSystemTheme } from './actions/theme';
 import { DEFAULT_APP_NAME } from '@/lib/branding/constants';
 import type { ThemeTokens } from '@/lib/theme';
+const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap' });
+const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' });
 
 export const metadata: Metadata = {
   title: {
@@ -39,7 +42,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const systemTheme = isThemeTokens(rawSystemTheme) ? rawSystemTheme : null;
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} className={`${jakarta.variable} ${manrope.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
         <Providers locale={locale} messages={messages} systemTheme={systemTheme}>
           {children}

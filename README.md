@@ -20,7 +20,16 @@ Fondasi proyek berasal dari ForgeStart (MIT) dan sudah disesuaikan dengan Travel
 - Drizzle migrations dan demo seed Hammad Tour (3 paket, 120 jamaah, dokumen dan invoice).
 - Vitest, React Testing Library, dan Playwright.
 
-## Stack
+## Ruang kerja
+
+- `/`: website publik untuk calon jamaah.
+- `/admin`: CMS website, katalog paket terbit/draf dan pengaturan identitas.
+- `/admin/manajemen`: ringkasan internal, jamaah, keberangkatan, dokumen, dan pembayaran.
+- Tombol **CMS / Internal** mengganti seluruh navigasi, mengikuti pola Jam Wisata. `/admin/cms` tetap menjadi alias ringkasan CMS.
+
+Katalog CMS saat ini menampilkan status publikasi; editor artikel, galeri, dan testimoni belum tersedia. Pemisahan ruang kerja tidak mengganti pemeriksaan izin dan organisasi pada server.
+
+## Teknologi
 
 Next.js 16, React 19, TypeScript strict, PostgreSQL/Neon, Drizzle ORM, Auth.js v5, Tailwind CSS 4, shadcn-style UI, next-intl, TanStack Query/Table, React Hook Form, Recharts, UploadThing, Resend, Vitest, dan Playwright. Package manager yang didukung adalah pnpm 10.
 

@@ -1,1 +1,1 @@
-export { default } from '@/app/(protected)/dashboard/page';
+export { default } from '@/app/(protected)/admin/cms/page';

@@ -1,4 +1,99 @@
 {
+  "admin": {
+    "system": {
+      "saveButton": "Simpan perubahan",
+      "logoUpload": {
+        "defaultLogo": "Logo bawaan Hammad Tour",
+        "customLogo": "Logo pilihan Anda",
+        "previewAlt": "Logo aplikasi",
+        "previewDescription": "Logo ini digunakan pada menu samping dan halaman masuk.",
+        "hint": "PNG, JPG, WebP, atau SVG. Maksimal 5 MB.",
+        "uploading": "Mengunggah… {progress}%",
+        "useDefault": "Gunakan logo bawaan"
+      },
+      "settingsLabels": {
+        "app": {
+          "name": {
+            "label": "Nama aplikasi",
+            "description": "Nama yang ditampilkan pada ruang kerja staf."
+          },
+          "logo_url": {
+            "label": "Logo aplikasi",
+            "description": "Unggah logo Anda atau gunakan logo bawaan Hammad Tour."
+          }
+        }
+      }
+    }
+  },
+  "uploads": {
+    "dropzoneTitle": "Tarik berkas ke sini atau pilih berkas",
+    "chooseFile": "Pilih berkas",
+    "uploading": "Mengunggah…",
+    "uploadFailed": "Berkas gagal diunggah"
+  },
+  "internalOverview": {
+    "title": "Ringkasan bisnis",
+    "description": "Pantau jamaah, pembayaran, dan persiapan keberangkatan.",
+    "findContact": "Cari kontak jamaah",
+    "scheduled": "Terjadwal",
+    "unscheduled": "Belum ada",
+    "allDocuments": "Berkas seluruh jamaah"
+  },
+  "cmsPackages": {
+    "title": "Paket di website",
+    "description": "Periksa paket yang tampil untuk calon jamaah. Data terhubung dengan manajemen internal.",
+    "denied": "Akses CMS belum diberikan.",
+    "name": "Nama paket",
+    "duration": "Durasi",
+    "price": "Harga mulai",
+    "publication": "Publikasi",
+    "days": "{count} hari",
+    "published": "Terbit",
+    "draft": "Draf"
+  },
+  "cmsWorkspace": {
+    "title": "Ringkasan website",
+    "description": "Kelola tampilan dan informasi untuk calon jamaah.",
+    "denied": "Akses CMS belum diberikan.",
+    "preview": "Lihat website",
+    "total": "Total paket",
+    "published": "Paket terbit",
+    "draft": "Paket draf",
+    "manage": "Mau memperbarui apa hari ini?",
+    "manageDescription": "Pilih bagian website yang ingin dikelola.",
+    "packages": "Katalog paket perjalanan",
+    "packageDescription": "Lihat harga, durasi, dan status publikasi paket.",
+    "identity": "Identitas & pengaturan website",
+    "identityDescription": "Perbarui nama travel, logo, dan informasi merek.",
+    "note": "Pengelolaan artikel, galeri, dan testimoni belum tersedia. Data jamaah dan transaksi berada di ruang kerja Internal.",
+    "previewTitle": "Perjalanan ibadah yang lebih tenang.",
+    "connected": "Terhubung dengan website publik",
+    "connectedDescription": "Paket yang diterbitkan dibaca dari data yang sama dengan manajemen internal."
+  },
+  "workspace": {
+    "cms": "CMS Website",
+    "internal": "Manajemen Internal",
+    "internalShort": "Internal",
+    "switch": "Pilih ruang kerja",
+    "overview": "Ringkasan bisnis",
+    "cmsOverview": "Ringkasan website",
+    "pilgrims": "Jamaah & pendaftaran",
+    "departures": "Paket & keberangkatan",
+    "operations": "Persiapan perjalanan",
+    "payments": "Pembayaran",
+    "reports": "Laporan",
+    "settings": "Pengaturan",
+    "packages": "Paket di website",
+    "brand": "Identitas website",
+    "business": "OPERASIONAL TRAVEL",
+    "content": "KELOLA WEBSITE",
+    "viewSite": "Lihat website",
+    "logout": "Keluar",
+    "menu": "Buka menu",
+    "close": "Tutup menu",
+    "internalDescription": "Jamaah, keuangan, dan kesiapan perjalanan",
+    "cmsDescription": "Konten dan identitas website publik"
+  },
   "common": {
     "save": "Simpan",
     "cancel": "Batal",
