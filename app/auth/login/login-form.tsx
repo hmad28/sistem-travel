@@ -49,10 +49,10 @@ export default function LoginForm() {
       onSubmit={submit}
       className="gap-5"
     >
-      <FormField<LoginFormValues> name="email" label={t('emailLabel')} className="gap-2">
+      <FormField<LoginFormValues> name="email" label={t('emailLabel')} className="gap-2 text-white data-[invalid=true]:text-[#f3a99a] [&_[data-slot=field-error]]:text-[#f3a99a]">
         {(field) => (
-          <InputGroup className="h-14 rounded-xl border-[#afbeb7] bg-[#e8eeea] px-1 shadow-[inset_0_1px_2px_rgba(18,63,56,.05)] focus-within:border-[#0b594c] focus-within:bg-white">
-            <InputGroupAddon className="pl-3 text-[#61716c]">
+          <InputGroup className="h-14 rounded-xl border-white/20 bg-white/[.07] px-1 shadow-none focus-within:border-[#dbc16e] focus-within:bg-white/[.1] focus-within:ring-[#dbc16e]/20 has-[[aria-invalid=true]]:border-[#f3a99a] has-[[aria-invalid=true]]:ring-[#f3a99a]/15">
+            <InputGroupAddon className="pl-3 text-white/50">
               <MailIcon className="size-5" />
             </InputGroupAddon>
             <InputGroupInput
@@ -60,7 +60,7 @@ export default function LoginForm() {
               type="email"
               autoComplete="email"
               placeholder="nama@travelanda.id"
-              className="h-full px-3 text-base placeholder:text-[#9ba5a1]"
+              className="h-full px-3 text-base text-white placeholder:text-white/35"
               value={(field.value as string | undefined) ?? ''}
               onChange={(event) => field.onChange(event.target.value)}
               onBlur={field.onBlur}
@@ -68,10 +68,10 @@ export default function LoginForm() {
           </InputGroup>
         )}
       </FormField>
-      <FormField<LoginFormValues> name="password" label={t('passwordLabel')} className="gap-2">
+      <FormField<LoginFormValues> name="password" label={t('passwordLabel')} className="gap-2 text-white data-[invalid=true]:text-[#f3a99a] [&_[data-slot=field-error]]:text-[#f3a99a]">
         {(field) => (
-          <InputGroup className="h-14 rounded-xl border-[#afbeb7] bg-[#e8eeea] px-1 shadow-[inset_0_1px_2px_rgba(18,63,56,.05)] focus-within:border-[#0b594c] focus-within:bg-white">
-            <InputGroupAddon className="pl-3 text-[#61716c]">
+          <InputGroup className="h-14 rounded-xl border-white/20 bg-white/[.07] px-1 shadow-none focus-within:border-[#dbc16e] focus-within:bg-white/[.1] focus-within:ring-[#dbc16e]/20 has-[[aria-invalid=true]]:border-[#f3a99a] has-[[aria-invalid=true]]:ring-[#f3a99a]/15">
+            <InputGroupAddon className="pl-3 text-white/50">
               <LockIcon className="size-5" />
             </InputGroupAddon>
             <InputGroupInput
@@ -80,13 +80,13 @@ export default function LoginForm() {
               autoComplete="current-password"
               value={(field.value as string | undefined) ?? ''}
               placeholder="Masukkan kata sandi"
-              className="h-full px-3 text-base placeholder:text-[#9ba5a1]"
+              className="h-full px-3 text-base text-white placeholder:text-white/35"
               onChange={(event) => field.onChange(event.target.value)}
               onBlur={field.onBlur}
             />
             <InputGroupButton
               size="icon-sm"
-              className="mr-2 size-10 rounded-lg text-[#61716c] hover:bg-[#edf3f0]"
+              className="mr-2 size-10 rounded-lg text-white/55 hover:bg-white/10 hover:text-white"
               onClick={() => setShowPassword((value) => !value)}
               aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}
             >
@@ -96,15 +96,15 @@ export default function LoginForm() {
         )}
       </FormField>
       <div className="flex items-center justify-between gap-4 text-sm">
-        <span className="font-medium text-[#7b8984]">Akses khusus staf</span>
+        <span className="font-medium text-white/40">Akses khusus staf</span>
         <Link
           href="/auth/forgot-password"
-          className="font-semibold text-[#0b594c] underline-offset-4 hover:underline"
+          className="font-semibold text-[#dbc16e] underline-offset-4 hover:text-[#ead98f] hover:underline"
         >
           {t('forgotPassword')}
         </Link>
       </div>
-      <SubmitButton className="mt-1 h-14 w-full rounded-xl bg-[#0b594c] px-5 text-base font-bold shadow-[0_8px_22px_rgba(11,89,76,.18)] transition hover:bg-[#08493f] active:translate-y-px">
+      <SubmitButton className="mt-1 h-14 w-full rounded-xl bg-[#dbc16e] px-5 text-base font-bold text-[#082f2a] shadow-[0_10px_28px_rgba(219,193,110,.14)] transition hover:bg-[#ead98f] active:translate-y-px">
         {t('submitLogin')} <ArrowRightIcon className="ml-auto size-5" />
       </SubmitButton>
     </Form>
