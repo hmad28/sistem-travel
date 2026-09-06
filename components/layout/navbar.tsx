@@ -74,7 +74,7 @@ export default function Navbar({ collapsed, setCollapsed, branding }: NavbarProp
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-52">
               <DropdownMenuGroup>
-                <DropdownMenuItem render={<Link href="/dashboard" />}>
+                <DropdownMenuItem render={<Link href="/admin" />}>
                   <LayoutDashboardIcon />
                   {tNav('dashboard')}
                 </DropdownMenuItem>

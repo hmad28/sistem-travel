@@ -28,7 +28,7 @@ export default function RegisterForm() {
       redirect: false,
     });
     if (!result?.error) {
-      router.push('/dashboard');
+      router.push('/admin');
     }
   };
 

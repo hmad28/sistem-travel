@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 import { env } from './env';
 
-const PROTECTED_PATH_PREFIXES = ['/dashboard', '/administrations'];
+const PROTECTED_PATH_PREFIXES = ['/admin', '/dashboard', '/travel', '/administrations'];
 
 function isProtectedPath(pathname: string): boolean {
   return PROTECTED_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));

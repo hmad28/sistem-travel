@@ -21,7 +21,7 @@ export default function LoginForm() {
   const t = useTranslations('auth');
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get('callbackUrl') ?? '/dashboard';
+  const callbackUrl = searchParams.get('callbackUrl') ?? '/admin';
   const { showNotification } = useNotification();
 
   const submit = async (values: LoginFormValues) => {

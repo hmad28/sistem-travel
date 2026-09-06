@@ -24,7 +24,7 @@ interface SidebarProps {
 
 const navItems = [
   {
-    href: '/dashboard',
+    href: '/admin',
     key: 'dashboard',
     icon: LayoutDashboardIcon,
   },
@@ -49,7 +49,7 @@ const navItems = [
     icon: PlaneTakeoffIcon,
   },
   {
-    href: '/travel/website',
+    href: '/admin/cms',
     key: 'website',
     icon: Globe2Icon,
   },
