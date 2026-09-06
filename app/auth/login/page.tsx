@@ -21,18 +21,19 @@ export default async function LoginPage() {
           <div className="max-w-xl pb-8"><p className="inline-flex items-center gap-2 text-sm font-bold text-[#ead080]"><BadgeCheck className="size-5" /> Sistem operasional travel terpadu</p><h1 className="mt-5 font-serif text-5xl font-semibold leading-tight">Layani jamaah dengan data yang lebih rapi.</h1><p className="mt-5 text-lg leading-8 text-white/70">Kelola pendaftaran, pembayaran, dokumen, dan kesiapan keberangkatan dalam satu tempat.</p><div className="mt-8 flex gap-6 text-sm font-semibold text-white/75"><span className="flex items-center gap-2"><CheckCircle2 className="size-5 text-[#ead080]" /> Mudah digunakan</span><span className="flex items-center gap-2"><Headphones className="size-5 text-[#ead080]" /> Bantuan tersedia</span></div></div>
         </div>
         </section>
-        <section className="flex min-h-screen items-center justify-center px-5 py-12 sm:px-10">
-          <Card className="w-full max-w-md border-0 bg-transparent shadow-none ring-0">
-            <CardHeader className="px-0 pb-7"><div className="mb-8 flex items-center gap-3 lg:hidden"><BrandLogo logoUrl={branding.logoUrl} name={branding.name} className="size-10" /><strong>{branding.name}</strong></div>
-              <p className="text-sm font-bold text-primary">AKSES STAF</p>
-              <CardTitle className="mt-2 text-3xl font-bold tracking-[-.03em]">{t('welcomeBackTitle')}</CardTitle>
+        <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f3f1e9] px-5 py-12 sm:px-10">
+          <div className="absolute -right-24 -top-24 size-80 rounded-full border-[54px] border-[#d9c079]/12" aria-hidden="true" />
+          <Card className="relative w-full max-w-[500px] rounded-[24px] border border-white/80 bg-white p-2 shadow-[0_30px_80px_rgba(20,49,43,.12)] ring-0 sm:p-4">
+            <CardHeader className="px-5 pb-7 pt-5 sm:px-7"><div className="mb-8 flex items-center gap-3 lg:hidden"><BrandLogo logoUrl={branding.logoUrl} name={branding.name} className="size-10" /><strong>{branding.name}</strong></div>
+              <p className="text-sm font-bold text-[#0b594c]">Sistem internal Hammad Tour</p>
+              <CardTitle className="mt-2 text-[34px] font-bold tracking-[-.035em]">Masuk ke dashboard</CardTitle>
               <CardDescription className="mt-2 text-base leading-7">
                 {t('loginWorkspaceDescription', { appName: branding.name })}
               </CardDescription>
             </CardHeader>
-            <CardContent className="px-0">
+            <CardContent className="px-5 pb-5 sm:px-7">
               <LoginForm />
-              <div className="mt-8 border-t pt-5 text-center text-sm text-muted-foreground">Kesulitan masuk? Hubungi pemilik travel atau administrator.</div>
+              <div className="mt-7 rounded-xl bg-[#f4f7f5] px-4 py-3 text-center text-sm leading-6 text-[#64736e]">Tidak bisa masuk? Hubungi pemilik travel atau administrator.</div>
             </CardContent>
           </Card>
         </section>
