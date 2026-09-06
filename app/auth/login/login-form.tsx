@@ -51,7 +51,7 @@ export default function LoginForm() {
     >
       <FormField<LoginFormValues> name="email" label={t('emailLabel')} className="gap-2">
         {(field) => (
-          <InputGroup className="h-14 rounded-xl border-[#d9ddd9] bg-[#fbfcfb] px-1 shadow-[0_1px_0_rgba(18,63,56,.03)] focus-within:bg-white">
+          <InputGroup className="h-14 rounded-xl border-[#afbeb7] bg-[#e8eeea] px-1 shadow-[inset_0_1px_2px_rgba(18,63,56,.05)] focus-within:border-[#0b594c] focus-within:bg-white">
             <InputGroupAddon className="pl-3 text-[#61716c]">
               <MailIcon className="size-5" />
             </InputGroupAddon>
@@ -70,7 +70,7 @@ export default function LoginForm() {
       </FormField>
       <FormField<LoginFormValues> name="password" label={t('passwordLabel')} className="gap-2">
         {(field) => (
-          <InputGroup className="h-14 rounded-xl border-[#d9ddd9] bg-[#fbfcfb] px-1 shadow-[0_1px_0_rgba(18,63,56,.03)] focus-within:bg-white">
+          <InputGroup className="h-14 rounded-xl border-[#afbeb7] bg-[#e8eeea] px-1 shadow-[inset_0_1px_2px_rgba(18,63,56,.05)] focus-within:border-[#0b594c] focus-within:bg-white">
             <InputGroupAddon className="pl-3 text-[#61716c]">
               <LockIcon className="size-5" />
             </InputGroupAddon>
