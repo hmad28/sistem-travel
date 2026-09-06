@@ -1,0 +1,460 @@
+import '../scripts/load-env.mjs';
+
+import bcrypt from 'bcryptjs';
+import { and, eq, isNull } from 'drizzle-orm';
+import type { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { env } from '../env';
+import { createNodeDb } from './node';
+import * as schema from './schema';
+import {
+  actions,
+  appSettings,
+  organizationMembers,
+  organizations,
+  permissionActions,
+  permissions,
+  resources,
+  roles,
+  userRoles,
+  users,
+} from './schema';
+import { DEFAULT_APP_LOGO_URL, DEFAULT_APP_NAME } from '../lib/branding/constants';
+
+type Db = NodePgDatabase<typeof schema>;
+
+const DEFAULT_RESOURCES = [
+  { name: 'ALL', slug: '*', description: 'All resources' },
+  { name: 'DASHBOARD', slug: 'dashboard', description: 'Dashboard statistics' },
+  { name: 'ORGANIZATION', slug: 'organization', description: 'Organization management' },
+  { name: 'USER', slug: 'user', description: 'User management' },
+  { name: 'ROLE', slug: 'role', description: 'Role management' },
+  { name: 'PERMISSION', slug: 'permission', description: 'Permission management' },
+  { name: 'RESOURCE', slug: 'resource', description: 'Resource management' },
+  { name: 'ACTION', slug: 'action', description: 'Action management' },
+  { name: 'SECURITY LOG', slug: 'security-log', description: 'Security audit logs' },
+  { name: 'AUDIT LOG', slug: 'audit-log', description: 'Operational audit logs' },
+  { name: 'SETTING', slug: 'setting', description: 'Application settings' },
+  { name: 'API KEY', slug: 'api-key', description: 'API key and service account access' },
+  { name: 'INVITATION', slug: 'invitation', description: 'User invitation workflow' },
+  { name: 'SYSTEM', slug: 'system', description: 'System readiness and health' },
+  { name: 'PROFILE', slug: 'profile', description: 'User profile' },
+  { name: 'PACKAGE', slug: 'package', description: 'Paket Umrah dan Haji' },
+  { name: 'DEPARTURE', slug: 'departure', description: 'Jadwal keberangkatan' },
+  { name: 'PILGRIM', slug: 'pilgrim', description: 'Data jamaah' },
+  { name: 'REGISTRATION', slug: 'registration', description: 'Pendaftaran jamaah' },
+  { name: 'DOCUMENT', slug: 'document', description: 'Dokumen jamaah' },
+  { name: 'FINANCE', slug: 'finance', description: 'Invoice dan pembayaran' },
+  { name: 'OPERATION', slug: 'operation', description: 'Operasional keberangkatan' },
+  { name: 'CMS', slug: 'cms', description: 'Konten website publik' },
+  { name: 'REPORT', slug: 'report', description: 'Laporan travel' },
+];
+
+const DEFAULT_ACTIONS = [
+  { name: 'VIEW', slug: 'view', description: 'Permission to view' },
+  { name: 'CREATE', slug: 'create', description: 'Permission to create' },
+  { name: 'EDIT', slug: 'edit', description: 'Permission to edit' },
+  { name: 'DELETE', slug: 'delete', description: 'Permission to delete' },
+  { name: 'MANAGE', slug: 'manage', description: 'Full management permission' },
+];
+
+const DEFAULT_ROLES = [
+  { name: 'OWNER', description: 'Pemilik travel dengan akses penuh', isDefault: false },
+  { name: 'ADMIN', description: 'Administrator operasional travel', isDefault: false },
+  { name: 'FINANCE', description: 'Pengelola pembayaran dan laporan keuangan', isDefault: false },
+  { name: 'OPERATIONS', description: 'Pengelola dokumen dan keberangkatan', isDefault: false },
+  { name: 'CUSTOMER SERVICE', description: 'Pengelola jamaah dan pendaftaran', isDefault: true },
+  { name: 'CONTENT EDITOR', description: 'Pengelola website dan artikel', isDefault: false },
+  { name: 'AGENT', description: 'Agen pemasaran travel', isDefault: false },
+];
+
+const DEFAULT_SETTINGS = [
+  {
+    key: 'app.name',
+    label: 'Application name',
+    value: DEFAULT_APP_NAME,
+    description: 'Displayed product name for the console',
+    isSecret: false,
+  },
+  {
+    key: 'app.logo_url',
+    label: 'Application logo',
+    value: DEFAULT_APP_LOGO_URL,
+    description: 'Default application logo. Upload a replacement from System Settings.',
+    isSecret: false,
+  },
+  {
+    key: 'app.default_locale',
+    label: 'Default locale',
+    value: 'id',
+    description: 'Bahasa utama aplikasi',
+    isSecret: false,
+  },
+  {
+    key: 'system.welcomeMessage',
+    label: 'Welcome message',
+    value:
+      '<h2>Selamat datang di Hammad Tour</h2><p>Mulai dari Beranda untuk melihat pekerjaan yang perlu diselesaikan hari ini.</p>',
+    description: 'Pesan sambutan untuk pengguna baru.',
+    isSecret: false,
+  },
+  {
+    key: 'auth.session_max_age_days',
+    label: 'Session max age',
+    value: '7',
+    description: 'Default session lifetime in days',
+    isSecret: false,
+  },
+  {
+    key: 'email.provider',
+    label: 'Email provider',
+    value: 'resend',
+    description: 'Email delivery provider key',
+    isSecret: false,
+  },
+  {
+    key: 'storage.provider',
+    label: 'Storage provider',
+    value: 'uploadthing',
+    description: 'Penyimpanan gambar dan dokumen melalui UploadThing',
+    isSecret: false,
+  },
+];
+
+function isLegacyAppName(value: string): boolean {
+  const normalized = value.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (!normalized) return true;
+  return ['next' + 'starter', 'next' + 'starterv2', 'next' + 'jsstarter'].includes(normalized);
+}
+
+async function upsertResource(db: Db, value: (typeof DEFAULT_RESOURCES)[number]) {
+  const [resource] = await db
+    .insert(resources)
+    .values(value)
+    .onConflictDoUpdate({
+      target: resources.slug,
+      set: {
+        name: value.name,
+        description: value.description,
+        updatedAt: new Date(),
+      },
+    })
+    .returning();
+
+  return resource;
+}
+
+async function upsertAction(db: Db, value: (typeof DEFAULT_ACTIONS)[number]) {
+  const [action] = await db
+    .insert(actions)
+    .values(value)
+    .onConflictDoUpdate({
+      target: actions.slug,
+      set: {
+        name: value.name,
+        description: value.description,
+        updatedAt: new Date(),
+      },
+    })
+    .returning();
+
+  return action;
+}
+
+async function upsertGlobalRole(db: Db, value: (typeof DEFAULT_ROLES)[number]) {
+  const [existing] = await db
+    .select()
+    .from(roles)
+    .where(and(eq(roles.name, value.name), isNull(roles.organizationId)))
+    .limit(1);
+
+  if (existing) {
+    const [updated] = await db
+      .update(roles)
+      .set({
+        description: value.description,
+        isDefault: value.isDefault,
+        updatedAt: new Date(),
+      })
+      .where(eq(roles.id, existing.id))
+      .returning();
+    return updated;
+  }
+
+  const [created] = await db.insert(roles).values(value).returning();
+  return created;
+}
+
+async function upsertSetting(db: Db, value: (typeof DEFAULT_SETTINGS)[number]) {
+  await db.insert(appSettings).values(value).onConflictDoNothing({ target: appSettings.key });
+
+  const [existing] = await db
+    .select()
+    .from(appSettings)
+    .where(eq(appSettings.key, value.key))
+    .limit(1);
+  if (!existing) return;
+
+  const updates: Partial<typeof value> = {
+    label: value.label,
+    description: value.description,
+    isSecret: value.isSecret,
+  };
+
+  if (value.key === 'app.name' && isLegacyAppName(existing.value)) {
+    updates.value = value.value;
+  }
+
+  if (value.key === 'app.logo_url' && !existing.value.trim()) {
+    updates.value = value.value;
+  }
+
+  await db
+    .update(appSettings)
+    .set({
+      ...updates,
+      updatedAt: new Date(),
+    })
+    .where(eq(appSettings.key, value.key));
+}
+
+async function upsertSuperAdmin(db: Db) {
+  const email = env.SUPER_ADMIN_EMAIL;
+  const firstName = env.SUPER_ADMIN_FIRST_NAME;
+  const lastName = env.SUPER_ADMIN_LAST_NAME;
+  const password = env.SUPER_ADMIN_PASSWORD;
+
+  if (process.env.NODE_ENV === 'production' && password === 'change-this-password') {
+    throw new Error('SUPER_ADMIN_PASSWORD must be changed before production seeding');
+  }
+
+  const passwordHash = await bcrypt.hash(password, 12);
+  const [existing] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+
+  if (existing) {
+    const [updated] = await db
+      .update(users)
+      .set({
+        firstName,
+        lastName,
+        name: `${firstName} ${lastName}`,
+        passwordHash,
+        status: 'ACTIVE',
+        emailVerified: new Date(),
+        updatedAt: new Date(),
+      })
+      .where(eq(users.id, existing.id))
+      .returning();
+    return updated;
+  }
+
+  const [created] = await db
+    .insert(users)
+    .values({
+      email,
+      firstName,
+      lastName,
+      name: `${firstName} ${lastName}`,
+      passwordHash,
+      status: 'ACTIVE',
+      emailVerified: new Date(),
+    })
+    .returning();
+
+  return created;
+}
+
+async function upsertMainOrganization(db: Db, ownerId: string) {
+  const [existing] = await db
+    .select()
+    .from(organizations)
+    .where(eq(organizations.slug, 'hammad-tour'))
+    .limit(1);
+
+  if (existing) {
+    const [updated] = await db
+      .update(organizations)
+      .set({
+        name: 'Hammad Tour',
+        legalName: 'PT Hammad Tour Indonesia',
+        whatsapp: '6281234567890',
+        city: 'Jakarta',
+        province: 'DKI Jakarta',
+        status: 'ACTIVE',
+        ownerId,
+        updatedAt: new Date(),
+      })
+      .where(eq(organizations.id, existing.id))
+      .returning();
+    return updated;
+  }
+
+  const [created] = await db
+    .insert(organizations)
+    .values({
+      name: 'Hammad Tour',
+      slug: 'hammad-tour',
+      legalName: 'PT Hammad Tour Indonesia',
+      whatsapp: '6281234567890',
+      city: 'Jakarta',
+      province: 'DKI Jakarta',
+      status: 'ACTIVE',
+      ownerId,
+    })
+    .returning();
+
+  return created;
+}
+
+export async function seedDatabase(db: Db) {
+  await db.transaction(async (tx) => {
+    const seededResources = [];
+    for (const resource of DEFAULT_RESOURCES) {
+      seededResources.push(await upsertResource(tx, resource));
+    }
+
+    const seededActions = [];
+    for (const action of DEFAULT_ACTIONS) {
+      seededActions.push(await upsertAction(tx, action));
+    }
+
+    const seededRoles = [];
+    for (const role of DEFAULT_ROLES) {
+      seededRoles.push(await upsertGlobalRole(tx, role));
+    }
+
+    for (const setting of DEFAULT_SETTINGS) {
+      await upsertSetting(tx, setting);
+    }
+
+    const superAdmin = await upsertSuperAdmin(tx);
+    const mainOrganization = await upsertMainOrganization(tx, superAdmin.id);
+
+    const adminRole = seededRoles.find((role) => role.name === 'OWNER');
+    const organizationAdminRole = seededRoles.find((role) => role.name === 'ADMIN');
+    const memberRole = seededRoles.find((role) => role.name === 'CUSTOMER SERVICE');
+
+    if (!adminRole || !organizationAdminRole || !memberRole) {
+      throw new Error('Seed roles were not created correctly');
+    }
+
+    await tx.delete(userRoles).where(eq(userRoles.userId, superAdmin.id));
+    await tx.insert(userRoles).values({ userId: superAdmin.id, roleId: adminRole.id });
+
+    await tx
+      .delete(organizationMembers)
+      .where(
+        and(
+          eq(organizationMembers.userId, superAdmin.id),
+          eq(organizationMembers.organizationId, mainOrganization.id)
+        )
+      );
+    await tx.insert(organizationMembers).values({
+      userId: superAdmin.id,
+      organizationId: mainOrganization.id,
+      roleId: organizationAdminRole.id,
+    });
+
+    const roleIds = seededRoles.map((role) => role.id);
+    const existingRolePermissions = await tx
+      .select({ id: permissions.id })
+      .from(permissions)
+      .where(eq(permissions.target, 'ROLE'));
+
+    for (const permission of existingRolePermissions) {
+      await tx.delete(permissionActions).where(eq(permissionActions.permissionId, permission.id));
+    }
+    await tx.delete(permissions).where(eq(permissions.target, 'ROLE'));
+
+    const existingUserPermissions = await tx
+      .select({ id: permissions.id })
+      .from(permissions)
+      .where(eq(permissions.userId, superAdmin.id));
+    for (const permission of existingUserPermissions) {
+      await tx.delete(permissionActions).where(eq(permissionActions.permissionId, permission.id));
+    }
+    await tx.delete(permissions).where(eq(permissions.userId, superAdmin.id));
+
+    const wildcardResource = seededResources.find((resource) => resource.slug === '*');
+    if (!wildcardResource) {
+      throw new Error('Wildcard resource missing');
+    }
+
+    const [superAdminPermission] = await tx
+      .insert(permissions)
+      .values({
+        target: 'USER',
+        userId: superAdmin.id,
+        resourceId: wildcardResource.id,
+      })
+      .returning();
+
+    await tx.insert(permissionActions).values(
+      seededActions.map((action) => ({
+        permissionId: superAdminPermission.id,
+        actionId: action.id,
+      }))
+    );
+
+    for (const resource of seededResources) {
+      const [permission] = await tx
+        .insert(permissions)
+        .values({
+          target: 'ROLE',
+          roleId: organizationAdminRole.id,
+          resourceId: resource.id,
+        })
+        .returning();
+
+      await tx.insert(permissionActions).values(
+        seededActions.map((action) => ({
+          permissionId: permission.id,
+          actionId: action.id,
+        }))
+      );
+    }
+
+    const viewAction = seededActions.find((action) => action.slug === 'view');
+    const profileResource = seededResources.find((resource) => resource.slug === 'profile');
+    const dashboardResource = seededResources.find((resource) => resource.slug === 'dashboard');
+
+    if (viewAction) {
+      for (const resource of [profileResource, dashboardResource].filter(Boolean)) {
+        const [permission] = await tx
+          .insert(permissions)
+          .values({
+            target: 'ROLE',
+            roleId: memberRole.id,
+            resourceId: resource!.id,
+          })
+          .returning();
+
+        await tx.insert(permissionActions).values({
+          permissionId: permission.id,
+          actionId: viewAction.id,
+        });
+      }
+    }
+
+    if (!roleIds.length) {
+      throw new Error('No roles were seeded');
+    }
+  });
+}
+
+async function main() {
+  const { db, pool } = createNodeDb();
+
+  try {
+    await seedDatabase(db);
+    console.log('Database seed completed');
+  } finally {
+    await pool.end();
+  }
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main().catch((error) => {
+    console.error('Seed failed:', error);
+    process.exit(1);
+  });
+}

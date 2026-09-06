@@ -1,0 +1,61 @@
+'use client';
+
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Navbar from '@/components/layout/navbar';
+import Sidebar from '@/components/layout/sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
+import { VerifyEmailBanner } from '@/components/auth/verify-banner';
+import { useAppBranding } from '@/lib/branding/use-app-branding';
+import { cn } from '@/lib/utils';
+
+function ProtectedSkeleton() {
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="hidden lg:block">
+        <div className="fixed inset-y-0 left-0 w-72 border-r bg-sidebar" />
+      </div>
+      <div className="lg:pl-72">
+        <div className="border-b bg-background px-8 py-4">
+          <Skeleton className="h-8 w-64" />
+        </div>
+        <main className="p-8">
+          <div className="mx-auto flex max-w-7xl flex-col gap-6">
+            <Skeleton className="h-32 w-full" />
+            <Skeleton className="h-96 w-full" />
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
+
+export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const { data: session, status } = useSession();
+  const { branding } = useAppBranding({ enabled: status === 'authenticated' });
+  const [collapsed, setCollapsed] = useState(false);
+
+  if (status === 'loading' || !session) {
+    return <ProtectedSkeleton />;
+  }
+
+  return (
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,var(--accent),transparent_28rem),var(--background)]">
+      <Sidebar collapsed={collapsed} branding={branding} />
+      <div
+        className={cn(
+          'min-h-screen transition-[padding] duration-200',
+          collapsed ? 'lg:pl-20' : 'lg:pl-72'
+        )}
+      >
+        <Navbar collapsed={collapsed} setCollapsed={setCollapsed} branding={branding} />
+        <main className="px-4 py-6 sm:px-6 lg:px-8">
+          <div className="mx-auto flex max-w-7xl flex-col gap-6">
+            <VerifyEmailBanner />
+            {children}
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+}
