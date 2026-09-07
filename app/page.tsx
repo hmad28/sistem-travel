@@ -6,12 +6,15 @@ import { getPublicSite } from '@/lib/travel/public-site';
 import { PublicShell, PackageCard } from '@/components/public/site-shell';
 import s from '@/components/public/public.module.css';
 import h from '@/components/public/home.module.css';
+import { ManagedContent } from '@/components/public/managed-content';
+import { BannerCarousel } from '@/components/public/banner-carousel';
 
 export default async function Home() {
-  const [data, t] = await Promise.all([getPublicSite(), getTranslations('publicSite')]);
+  const [data, defaults] = await Promise.all([getPublicSite(), getTranslations('publicSite')]);
+  const t = (key: string) => data.homeText[key] || defaults(key);
   return (
     <PublicShell data={data}>
-      <section className={h.hero}>
+      {data.content.banner.some(e=>e.image) ? <BannerCarousel entries={data.content.banner.filter(e=>e.image)} /> : <section className={h.hero}>
         <Image
           src="/images/makkah.jpg"
           alt=""
@@ -38,7 +41,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>}
       <section className={s.section}>
         <div className={s.container}>
           <div className={s.sectionHead}>
@@ -134,6 +137,7 @@ export default async function Home() {
           </Link>
         </div>
       </section>
+      <ManagedContent data={data} />
     </PublicShell>
   );
 }

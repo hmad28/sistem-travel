@@ -76,7 +76,7 @@ export default async function CmsDashboardPage() {
                   key={title as string}
                   className="group flex items-center gap-4 p-6 hover:bg-slate-50"
                 >
-                  <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-[#edf2f9] text-[#315d87]">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-[#edf2f9] text-[#195acb]">
                     <I className="size-5" />
                   </span>
                   <div className="flex-1">
@@ -101,7 +101,7 @@ export default async function CmsDashboardPage() {
             <span className="size-2 rounded-full bg-slate-300" />
             <span className="ml-3 text-xs text-slate-500">{branding.name}</span>
           </div>
-          <div className="relative h-64 bg-[#103f39]">
+          <div className="relative h-64 bg-[#142b59]">
             <Image
               src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=900&q=85"
               fill

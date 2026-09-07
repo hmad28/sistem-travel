@@ -14,7 +14,7 @@ export default async function Page() {
       />
       <div className={s.container}>
         <div className={s.faq}>
-          {['choose', 'register', 'documents', 'elderly', 'payment', 'schedule'].map((key) => (
+          {data.content.faq.length ? data.content.faq.map(entry => <details key={entry.id}><summary>{entry.title}</summary><p className="whitespace-pre-line">{entry.body}</p></details>) : ['choose', 'register', 'documents', 'elderly', 'payment', 'schedule'].map((key) => (
             <details key={key}>
               <summary>{t(`faq.${key}.question`)}</summary>
               <p>{t(`faq.${key}.answer`)}</p>

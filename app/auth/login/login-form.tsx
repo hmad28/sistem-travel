@@ -104,7 +104,7 @@ export default function LoginForm() {
           {t('forgotPassword')}
         </Link>
       </div>
-      <SubmitButton className="mt-1 h-14 w-full rounded-xl bg-[#dbc16e] px-5 text-base font-bold text-[#082f2a] shadow-[0_10px_28px_rgba(219,193,110,.14)] transition hover:bg-[#ead98f] active:translate-y-px">
+      <SubmitButton className="mt-1 h-14 w-full rounded-xl bg-[#dbc16e] px-5 text-base font-bold text-[#142b59] shadow-[0_10px_28px_rgba(219,193,110,.14)] transition hover:bg-[#ead98f] active:translate-y-px">
         {t('submitLogin')} <ArrowRightIcon className="ml-auto size-5" />
       </SubmitButton>
     </Form>

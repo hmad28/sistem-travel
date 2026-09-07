@@ -35,11 +35,15 @@ export function TravelWorkspace({
 }) {
   const path = usePathname();
   const t = useTranslations('workspace');
+  const c = useTranslations('contentEditor');
+  const w = useTranslations('workflow');
+  const home = useTranslations('homeEditor');
   const [open, setOpen] = useState(false);
   const canPilgrims = usePermission('pilgrim', 'view');
   const canDepartures = usePermission('departure', 'view');
   const canFinance = usePermission('finance', 'view');
   const canCms = usePermission('cms', 'view');
+  const canRegistration = usePermission('registration', 'view');
   const internal =
     path.startsWith('/travel') ||
     path.startsWith('/dashboard') ||
@@ -49,7 +53,7 @@ export function TravelWorkspace({
     ? ([
         ['/admin/manajemen', 'overview', LayoutDashboard],
         ['/travel/jamaah', 'pilgrims', UsersRound],
-        ['/travel/keberangkatan', 'departures', CalendarDays],
+        ['/admin/manajemen/keberangkatan', 'departures', CalendarDays],
         ['/travel/operasional', 'operations', PlaneTakeoff],
         ['/travel/pembayaran', 'payments', WalletCards],
         ['/admin/manajemen/pengaturan', 'settings', Settings2],
@@ -97,6 +101,7 @@ export function TravelWorkspace({
         </div>
         <p className="workspace-section-label">{t(internal ? 'business' : 'content')}</p>
         <nav aria-label={t(internal ? 'internal' : 'cms')}>
+          {!internal && canCms && <Link href="/admin/cms/beranda" onClick={() => setOpen(false)} aria-current={path === '/admin/cms/beranda' ? 'page' : undefined}><LayoutDashboard /><span>{home('title')}</span><NavigationFeedback /></Link>}
           {entries
             .filter(([, key]) =>
               key === 'payments'
@@ -130,6 +135,44 @@ export function TravelWorkspace({
                 </Link>
               );
             })}
+          {!internal &&
+            canCms &&
+            (['banner', 'page', 'article', 'gallery', 'testimonial', 'faq'] as const).map(
+              (kind) => (
+                <Link
+                  key={kind}
+                  href={`/admin/cms/konten/${kind}`}
+                  onClick={() => setOpen(false)}
+                  aria-current={path.includes(`/konten/${kind}`) ? 'page' : undefined}
+                >
+                  <Globe2 />
+                  <span>{c(kind)}</span>
+                  <NavigationFeedback />
+                </Link>
+              )
+            )}
+          {internal && canRegistration && (
+            <Link
+              href="/admin/manajemen/pendaftaran"
+              onClick={() => setOpen(false)}
+              aria-current={path.startsWith('/admin/manajemen/pendaftaran') ? 'page' : undefined}
+            >
+              <UsersRound />
+              <span>{w('registrationsTitle')}</span>
+              <NavigationFeedback />
+            </Link>
+          )}
+          {internal && canFinance && (
+            <Link
+              href="/admin/manajemen/kwitansi"
+              onClick={() => setOpen(false)}
+              aria-current={path.startsWith('/admin/manajemen/kwitansi') ? 'page' : undefined}
+            >
+              <WalletCards />
+              <span>{w('receiptsTitle')}</span>
+              <NavigationFeedback />
+            </Link>
+          )}
         </nav>
         <div className="workspace-sidebar-bottom">
           <Link href="/" target="_blank" rel="noopener noreferrer">

@@ -57,17 +57,17 @@ body {
   --card-foreground: #182b33;
   --muted: #edf1f3;
   --muted-foreground: #596c76;
-  --primary: #146454;
+  --primary: #195acb;
   --primary-foreground: #fff;
   --border: #dde5e8;
-  --accent: #e9f3ef;
+  --accent: #eaf0f8;
   min-height: 100dvh;
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-jakarta), sans-serif;
 }
 .tour-workspace[data-workspace='cms'] {
-  --primary: #315d87;
+  --primary: #195acb;
   --accent: #eaf0f8;
 }
 .workspace-sidebar {

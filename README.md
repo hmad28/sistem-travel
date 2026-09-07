@@ -28,11 +28,13 @@ Fondasi proyek berasal dari ForgeStart (MIT) dan sudah disesuaikan dengan Travel
 - `/admin/manajemen`: ringkasan internal, jamaah, keberangkatan, dokumen, dan pembayaran.
 - Tombol **CMS / Internal** mengganti seluruh navigasi, mengikuti pola Jam Wisata. `/admin/cms` tetap menjadi alias ringkasan CMS.
 
-Katalog CMS saat ini menampilkan status publikasi; editor artikel, galeri, dan testimoni belum tersedia. Pemisahan ruang kerja tidak mengganti pemeriksaan izin dan organisasi pada server.
+CMS menyediakan editor paket, teks beranda, banner desktop/HP, artikel, halaman informasi, galeri, video/cerita jamaah, dan FAQ. Konten dapat diurutkan; video menerima tautan YouTube/Shorts. Teks beranda memiliki draf terpisah dari publikasi. Pemisahan ruang kerja tetap dilindungi pemeriksaan izin dan organisasi pada server.
 
-`/administrations/*` lama diarahkan ke pengaturan travel sederhana (kecuali profil pribadi). Panel database, migrasi, environment, dan diagnostik tidak menjadi layar klien. Indikator pemuatan tampil saat membuka halaman; beranda contoh diberi label data demo. Form pencatatan pembayaran, penyuntingan jadwal, serta penerbitan kwitansi belum tersedia pada UI saat ini—jangan menganggap daftar baca sebagai alur operasional lengkap.
+`/administrations/*` lama diarahkan ke pengaturan travel sederhana (kecuali profil pribadi). Panel database, migrasi, environment, dan diagnostik tidak menjadi layar klien. Indikator pemuatan tampil saat membuka halaman; beranda contoh diberi label data demo.
 
-Desain publik mengadaptasi struktur Tazkia melalui workflow AI Website Cloner Template; identitas, paket, kontak, dan isi tidak mengambil klaim/testimoni Tazkia. Paket kosong tidak diganti penawaran fiktif. Nomor WhatsApp contoh tidak dipakai sebagai tujuan konsultasi.
+Alur internal: buat paket → tambah/ubah keberangkatan → daftarkan jamaah → invoice otomatis → catat DP/cicilan → kwitansi tersimpan. Kuota dan sisa tagihan diperiksa di server. Cetak dokumen, pembatalan/refund, manifest/room list, kas, agen, stok, serta seluruh modul referensi belum lengkap. Lihat [status implementasi](docs/implementation-status.md) untuk batasan dan bukti pengujian; proyek belum dinyatakan siap produksi.
+
+Clone presisi seluruh halaman Tazkia masih belum selesai. Identitas, paket, kontak, dan isi tidak mengambil klaim/testimoni Tazkia. Paket kosong tidak diganti penawaran fiktif. Nomor WhatsApp contoh tidak dipakai sebagai tujuan konsultasi.
 
 ## Teknologi
 

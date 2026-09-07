@@ -4,6 +4,8 @@ import { and, asc, eq, isNull, inArray, gte } from 'drizzle-orm';
 import { readDb } from '@/db/read';
 import { organizations, travelPackages, departures } from '@/db/schema';
 import { loadAppBranding } from '@/lib/branding/server';
+import { getContent, type ContentEntry } from './content';
+import { getHomeContent } from './home-content';
 
 export interface PublicPackage {
   id: string;
@@ -29,6 +31,8 @@ export interface PublicPackage {
   image: string;
 }
 export interface PublicSiteData {
+  homeText: Record<string, string>;
+  content: Record<'banner'|'page'|'article'|'gallery'|'testimonial'|'faq', ContentEntry[]>;
   brand: { name: string; logoUrl: string };
   contact: { phone: string; whatsapp: string; email: string; address: string };
   packages: PublicPackage[];
@@ -42,7 +46,7 @@ export const getPublicSite = cache(async (): Promise<PublicSiteData> => {
     .where(and(eq(organizations.slug, 'hammad-tour'), eq(organizations.status, 'ACTIVE')))
     .limit(1);
   if (!organization)
-    return { brand, contact: { phone: '', whatsapp: '', email: '', address: '' }, packages: [] };
+    return { brand, homeText: {}, contact: { phone: '', whatsapp: '', email: '', address: '' }, packages: [], content: {banner:[],page:[],article:[],gallery:[],testimonial:[],faq:[]} };
   const today = new Intl.DateTimeFormat('en-CA', {
     timeZone: 'Asia/Jakarta',
     year: 'numeric',
@@ -97,11 +101,14 @@ export const getPublicSite = cache(async (): Promise<PublicSiteData> => {
       requirements: item.requirements,
       facilities: item.facilities,
       itinerary: item.itinerary,
-      image: index % 2 ? '/images/makkah-city.png' : '/images/makkah.jpg',
+      image: item.thumbnailKey || (index % 2 ? '/images/makkah-city.png' : '/images/makkah.jpg'),
     }));
   const validPhone = (value: string | null) =>
     value && !['6281234567890', '081234567890'].includes(value.replace(/\D/g, '')) ? value : '';
+  const [banner,page,article,gallery,testimonial,faq] = await Promise.all((['banner','page','article','gallery','testimonial','faq'] as const).map(async kind=>(await getContent(organization.id,kind)).filter(entry=>entry.published)));
   return {
+    homeText: (await getHomeContent(organization.id)).published,
+    content: {banner,page,article,gallery,testimonial,faq},
     brand,
     contact: {
       phone: validPhone(organization.phone),

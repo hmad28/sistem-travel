@@ -6,10 +6,12 @@ import { requireOrganizationContext } from '@/lib/auth/organization-context';
 import { hasSessionPermission } from '@/lib/auth/permissions';
 import { PageShell } from '@/components/layout';
 import { formatIdr } from '@/lib/travel/format';
+import Link from 'next/link';
 
 export default async function CmsPackages() {
   const context = await requireOrganizationContext();
   const t = await getTranslations('cmsPackages');
+  const w = await getTranslations('workflow');
   if (!hasSessionPermission(context.user, 'cms', 'view', context.organizationId))
     return <p>{t('denied')}</p>;
   const packages = await readDb
@@ -21,6 +23,7 @@ export default async function CmsPackages() {
     <PageShell
       title={t('title')}
       description={t('description')}
+      actions={<Link href="/admin/cms/paket/baru" className="inline-flex min-h-12 items-center rounded-lg bg-primary px-5 font-semibold text-primary-foreground">{w('addPackage')}</Link>}
     >
       <div className="overflow-x-auto rounded-xl border bg-white">
         <table className="w-full min-w-[650px] text-left">
@@ -36,7 +39,7 @@ export default async function CmsPackages() {
           <tbody>
             {packages.map((p) => (
               <tr key={p.id} className="border-t">
-                <td className="px-6 py-6 font-semibold">{p.name}</td>
+                <td className="px-6 py-6 font-semibold"><Link className="text-primary underline" href={`/admin/cms/paket/${p.id}`}>{p.name}</Link></td>
                 <td className="px-6">{t('days', { count: p.durationDays })}</td>
                 <td className="px-6">{formatIdr.format(p.startingPrice)}</td>
                 <td className="px-6">

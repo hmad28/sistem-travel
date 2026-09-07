@@ -14,11 +14,13 @@ export default async function TravelModulePage({
   params: Promise<{ module: string }>;
 }) {
   const { module } = await params;
+  if (module === 'keberangkatan') redirect('/admin/manajemen/keberangkatan');
   if (module === 'website') redirect('/admin');
   if (module === 'laporan') redirect('/travel/pembayaran');
   if (!['jamaah', 'keberangkatan', 'pembayaran', 'operasional'].includes(module)) notFound();
   const { organizationId, organization, user } = await requireOrganizationContext();
   const t = await getTranslations('travelSimple');
+  const w = await getTranslations('workflow');
   const resource = module === 'pembayaran' ? 'finance' : module === 'keberangkatan' ? 'departure' : 'pilgrim';
   if (!hasSessionPermission(user, resource, 'view', organizationId)) return <p>{t('denied')}</p>;
   const pilgrims =
@@ -48,9 +50,10 @@ export default async function TravelModulePage({
             <Plus className="size-5" />
             {t('addPilgrim')}
           </Link>
-        ) : undefined
+        ) : module !== 'operasional' ? <Link href={`/admin/manajemen/${module}/baru`} className="inline-flex min-h-12 items-center rounded-lg bg-primary px-5 font-semibold text-primary-foreground">{w(module === 'keberangkatan' ? 'addDeparture' : 'addPayment')}</Link> : undefined
       }
     >
+      {module === 'jamaah' && <Link href="/admin/manajemen/pendaftaran/baru" className="inline-flex min-h-12 items-center rounded-lg border bg-white px-5 font-semibold text-primary">{w('register')}</Link>}
       {organization.slug === 'hammad-tour' && (
         <p className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950">
           {t('demo')}

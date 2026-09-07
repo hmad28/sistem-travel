@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin('./i18n/request.ts');
 const nextConfig: NextConfig = {
   serverExternalPackages: ['pg', 'sharp', '@aws-sdk/client-s3', 'isomorphic-dompurify'],
   images: {
-    remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
+    remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }, { protocol: 'https', hostname: '*.ufs.sh' }],
   },
 };
 
