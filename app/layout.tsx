@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, Manrope } from 'next/font/google';
-import { getLocale, getMessages } from 'next-intl/server';
+import { getLocale, getMessages, getTimeZone } from 'next-intl/server';
 import './globals.css';
 import { Providers } from './providers';
 import { loadSystemTheme } from './actions/theme';
@@ -33,9 +33,10 @@ function isThemeTokens(value: unknown): value is ThemeTokens {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [locale, messages, rawSystemTheme] = await Promise.all([
+  const [locale, messages, timeZone, rawSystemTheme] = await Promise.all([
     getLocale(),
     getMessages(),
+    getTimeZone(),
     loadSystemTheme().catch(() => null),
   ]);
 
@@ -44,7 +45,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={locale} className={`${jakarta.variable} ${manrope.variable}`} suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <Providers locale={locale} messages={messages} systemTheme={systemTheme}>
+        <Providers locale={locale} messages={messages} timeZone={timeZone} systemTheme={systemTheme}>
           {children}
         </Providers>
       </body>

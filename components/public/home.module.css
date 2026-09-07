@@ -1,0 +1,210 @@
+.hero {
+  position: relative;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  background: #13366a;
+  overflow: hidden;
+}
+.heroPhoto {
+  object-fit: cover;
+  object-position: center 58%;
+}
+.shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #0e306aef 5%, #13366ac9 40%, #13366a10 100%);
+}
+.heroCopy {
+  position: relative;
+  max-width: 710px;
+  padding: 76px 0 88px;
+}
+.heroCopy h1 {
+  color: white;
+  font-size: clamp(38px, 4.5vw, 64px);
+  font-weight: 800;
+  line-height: 1.16;
+}
+.eyebrow {
+  display: inline-block;
+  color: #ffdca5;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 22px;
+}
+.heroCopy p {
+  font-size: 19px;
+  color: #e9f0fc;
+  max-width: 580px;
+  line-height: 1.8;
+  margin: 24px 0 30px;
+}
+.heroActions {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  color: white;
+  font-weight: 650;
+}
+.services {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.service {
+  display: flex;
+  align-items: start;
+  gap: 16px;
+  padding: 26px 20px;
+  background: #f4f8ff;
+  border-radius: 16px;
+}
+.service > span {
+  color: #165ac6;
+}
+.service > svg {
+  margin-left: auto;
+  flex-shrink: 0;
+  color: #165ac6;
+}
+.service h3 {
+  font-size: 21px;
+}
+.service p {
+  font-size: 15px;
+  color: #66768f;
+  margin-top: 10px;
+}
+.guidance {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 70px;
+  align-items: center;
+}
+.guideImage {
+  position: relative;
+  min-height: 510px;
+  overflow: hidden;
+  border-radius: 24px;
+}
+.guideImage img {
+  object-fit: cover;
+}
+.intro {
+  margin: 18px 0 28px;
+  color: #65748c;
+}
+.steps {
+  display: grid;
+  gap: 26px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.steps li {
+  display: flex;
+  gap: 18px;
+}
+.steps li > span {
+  display: grid;
+  place-items: center;
+  min-width: 42px;
+  height: 42px;
+  background: #eaf1fe;
+  color: #165ac6;
+  border-radius: 50%;
+  font-weight: 800;
+}
+.steps h3 {
+  font-size: 19px;
+}
+.steps p {
+  margin-top: 8px;
+  color: #65748c;
+}
+.textLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #165ac6;
+  font-weight: 700;
+  margin-top: 28px;
+  min-height: 44px;
+}
+.contact {
+  background: #eaf2ff;
+  padding: 58px 0;
+}
+.contactInner {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: center;
+}
+.contact h2 {
+  max-width: 760px;
+}
+.contact p {
+  margin-top: 16px;
+  max-width: 700px;
+  color: #61728c;
+}
+.contact a {
+  flex-shrink: 0;
+}
+@media (max-width: 1000px) {
+  .services {
+    grid-template-columns: 1fr;
+  }
+  .service {
+    align-items: center;
+  }
+  .service p {
+    margin-top: 6px;
+  }
+  .guidance {
+    gap: 32px;
+  }
+  .contactInner {
+    flex-direction: column;
+    align-items: start;
+  }
+}
+@media (max-width: 640px) {
+  .hero {
+    min-height: 570px;
+  }
+  .heroCopy {
+    padding: 54px 0 66px;
+  }
+  .heroCopy p {
+    font-size: 17px;
+  }
+  .shade {
+    background: linear-gradient(90deg, #0e306aee, #13366aba);
+  }
+  .guidance {
+    grid-template-columns: 1fr;
+  }
+  .guideImage {
+    min-height: 290px;
+  }
+  .heroActions {
+    gap: 14px;
+  }
+  .contact {
+    padding: 42px 0;
+  }
+  .service {
+    padding: 24px 18px;
+  }
+}

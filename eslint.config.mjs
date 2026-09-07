@@ -11,6 +11,8 @@ const config = [
       'node_modules/**',
       'playwright-report/**',
       'test-results/**',
+      '.playwright-cli/**',
+      'output/**',
       'public/**',
     ],
   },

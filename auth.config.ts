@@ -32,6 +32,13 @@ export default {
       }
 
       if (isLoggedIn) {
+        // Legacy starter screens are not part of the travel-owner workspace.
+        if (
+          pathname.startsWith('/administrations') &&
+          !pathname.startsWith('/administrations/users/profile/edit')
+        ) {
+          return Response.redirect(new URL('/admin/manajemen/pengaturan', request.nextUrl));
+        }
         return true;
       }
 

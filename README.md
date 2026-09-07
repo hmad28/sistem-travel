@@ -12,9 +12,9 @@ Fondasi proyek berasal dari ForgeStart (MIT) dan sudah disesuaikan dengan Travel
 
 - Website publik dengan paket dan keberangkatan dari database.
 - Dashboard tugas harian berbasis data organisasi aktif.
-- Data jamaah dan pendaftaran, paket, keberangkatan, dokumen, invoice, pembayaran, serta kwitansi.
+- Daftar jamaah, jadwal keberangkatan, status berkas, dan tagihan dari data tersimpan; pencarian, rincian baca, dan unduhan Excel untuk data yang ditampilkan.
 - Form tambah jamaah yang ringkas, validasi nomor Indonesia, ID otomatis, dan audit log.
-- Auth.js v5, organisasi multi-tenant, role/permission, undangan, dan log keamanan.
+- Auth.js v5, organisasi multi-tenant, dan pemeriksaan izin. Menu teknis starter tidak ditampilkan ke pengguna travel.
 - UploadThing untuk gambar CMS dan dokumen jamaah privat.
 - Neon HTTP untuk query baca serverless dan pooled PostgreSQL untuk transaksi.
 - Drizzle migrations dan demo seed Hammad Tour (3 paket, 120 jamaah, dokumen dan invoice).
@@ -23,11 +23,16 @@ Fondasi proyek berasal dari ForgeStart (MIT) dan sudah disesuaikan dengan Travel
 ## Ruang kerja
 
 - `/`: website publik untuk calon jamaah.
+- `/umroh`, `/umroh-plus`, `/haji`, `/wisata-halal`: katalog perjalanan; `/paket/[slug]`: rincian paket; `/kontak`, `/faq`, `/tentang`: informasi calon jamaah.
 - `/admin`: CMS website, katalog paket terbit/draf dan pengaturan identitas.
 - `/admin/manajemen`: ringkasan internal, jamaah, keberangkatan, dokumen, dan pembayaran.
 - Tombol **CMS / Internal** mengganti seluruh navigasi, mengikuti pola Jam Wisata. `/admin/cms` tetap menjadi alias ringkasan CMS.
 
 Katalog CMS saat ini menampilkan status publikasi; editor artikel, galeri, dan testimoni belum tersedia. Pemisahan ruang kerja tidak mengganti pemeriksaan izin dan organisasi pada server.
+
+`/administrations/*` lama diarahkan ke pengaturan travel sederhana (kecuali profil pribadi). Panel database, migrasi, environment, dan diagnostik tidak menjadi layar klien. Indikator pemuatan tampil saat membuka halaman; beranda contoh diberi label data demo. Form pencatatan pembayaran, penyuntingan jadwal, serta penerbitan kwitansi belum tersedia pada UI saat ini—jangan menganggap daftar baca sebagai alur operasional lengkap.
+
+Desain publik mengadaptasi struktur Tazkia melalui workflow AI Website Cloner Template; identitas, paket, kontak, dan isi tidak mengambil klaim/testimoni Tazkia. Paket kosong tidak diganti penawaran fiktif. Nomor WhatsApp contoh tidak dipakai sebagai tujuan konsultasi.
 
 ## Teknologi
 

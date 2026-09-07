@@ -70,14 +70,15 @@ interface ProvidersProps {
   children: ReactNode;
   locale: string;
   messages: AbstractIntlMessages;
+  timeZone: string;
   systemTheme: ThemeTokens | null;
 }
 
-export function Providers({ children, locale, messages, systemTheme }: ProvidersProps) {
+export function Providers({ children, locale, messages, timeZone, systemTheme }: ProvidersProps) {
   const [queryClient] = useState(() => getQueryClient());
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages} timeZone={timeZone}>
       <SessionProvider>
         <QueryClientProvider client={queryClient}>
           <NextThemesProvider

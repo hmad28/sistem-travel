@@ -12,7 +12,6 @@ import {
   UsersRound,
   WalletCards,
   PlaneTakeoff,
-  ChartNoAxesCombined,
   Settings2,
   Palette,
   PackageOpen,
@@ -23,6 +22,8 @@ import {
 } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { BrandLogo } from '@/components/brand';
+import { NavigationFeedback } from './navigation-feedback';
+import { usePermission } from '@/lib/auth/client-permissions';
 import type { AppBranding } from '@/lib/branding/constants';
 
 export function TravelWorkspace({
@@ -35,6 +36,10 @@ export function TravelWorkspace({
   const path = usePathname();
   const t = useTranslations('workspace');
   const [open, setOpen] = useState(false);
+  const canPilgrims = usePermission('pilgrim', 'view');
+  const canDepartures = usePermission('departure', 'view');
+  const canFinance = usePermission('finance', 'view');
+  const canCms = usePermission('cms', 'view');
   const internal =
     path.startsWith('/travel') ||
     path.startsWith('/dashboard') ||
@@ -47,8 +52,7 @@ export function TravelWorkspace({
         ['/travel/keberangkatan', 'departures', CalendarDays],
         ['/travel/operasional', 'operations', PlaneTakeoff],
         ['/travel/pembayaran', 'payments', WalletCards],
-        ['/travel/laporan', 'reports', ChartNoAxesCombined],
-        ['/administrations', 'settings', Settings2],
+        ['/admin/manajemen/pengaturan', 'settings', Settings2],
       ] as const)
     : ([
         ['/admin', 'cmsOverview', LayoutDashboard],
@@ -81,36 +85,51 @@ export function TravelWorkspace({
             onClick={() => setOpen(false)}
             aria-current={!internal ? 'page' : undefined}
           >
-            <Globe2 /> CMS
+            <Globe2 /> CMS <NavigationFeedback />
           </Link>
           <Link
             href="/admin/manajemen"
             onClick={() => setOpen(false)}
             aria-current={internal ? 'page' : undefined}
           >
-            <Building2 /> {t('internalShort')}
+            <Building2 /> {t('internalShort')} <NavigationFeedback />
           </Link>
         </div>
         <p className="workspace-section-label">{t(internal ? 'business' : 'content')}</p>
         <nav aria-label={t(internal ? 'internal' : 'cms')}>
-          {entries.map(([href, key, Icon]) => {
-            const active =
-              href === '/admin'
-                ? path === '/admin' || path === '/admin/cms'
-                : path === href || path.startsWith(`${href}/`);
-            return (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                aria-current={active ? 'page' : undefined}
-              >
-                <Icon />
-                <span>{t(key)}</span>
-                {active && <span className="workspace-active-dot" />}
-              </Link>
-            );
-          })}
+          {entries
+            .filter(([, key]) =>
+              key === 'payments'
+                ? canFinance
+                : key === 'pilgrims' || key === 'operations'
+                  ? canPilgrims
+                  : key === 'departures'
+                    ? canDepartures
+                    : key === 'packages' || key === 'cmsOverview'
+                      ? canCms
+                      : true
+            )
+            .map(([href, key, Icon]) => {
+              const active =
+                href === '/admin'
+                  ? path === '/admin' || path === '/admin/cms'
+                  : href === '/admin/manajemen'
+                    ? path === href || path === '/dashboard'
+                    : path === href || path.startsWith(`${href}/`);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? 'page' : undefined}
+                >
+                  <Icon />
+                  <span>{t(key)}</span>
+                  <NavigationFeedback />
+                  {active && <span className="workspace-active-dot" />}
+                </Link>
+              );
+            })}
         </nav>
         <div className="workspace-sidebar-bottom">
           <Link href="/" target="_blank" rel="noopener noreferrer">

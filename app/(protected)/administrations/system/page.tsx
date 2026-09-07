@@ -1,5 +1,5 @@
-import SystemSettings from '@/components/app/system-settings';
+import { redirect } from 'next/navigation';
 
 export default function SystemPage() {
-  return <SystemSettings />;
+  redirect('/admin/manajemen/pengaturan');
 }

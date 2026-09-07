@@ -1,0 +1,344 @@
+.container {
+  max-width: 1280px;
+  margin: auto;
+  padding: 56px 24px;
+}
+.catalogue {
+  display: grid;
+  grid-template-columns: 256px minmax(0, 1fr);
+  gap: 28px;
+}
+.filters {
+  align-self: start;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 24px;
+  display: grid;
+  gap: 20px;
+}
+.filters label,
+.form label {
+  display: grid;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #253b5d;
+}
+.filters input,
+.filters select,
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: white;
+  color: #172b4d;
+  padding: 10px 12px;
+  font: inherit;
+}
+.filters a {
+  font-size: 16px;
+  text-align: center;
+  color: #2458b8;
+  padding: 10px;
+}
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  border-radius: 12px;
+  background: #2563eb;
+  color: white;
+  padding: 12px 22px;
+  font: inherit;
+  font-weight: 650;
+  border: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.button:focus-visible,
+.filters input:focus-visible,
+.filters select:focus-visible,
+.form input:focus-visible,
+.form textarea:focus-visible,
+.form select:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  color: #52647d;
+}
+.empty {
+  padding: 48px 28px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  text-align: center;
+}
+.empty h2,
+.panel h2,
+.heading {
+  font-size: 26px;
+  font-weight: 750;
+  color: #203e7c;
+  margin: 0 0 20px;
+}
+.empty p,
+.panel p,
+.copy {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #52647d;
+}
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 32px;
+}
+.stack {
+  display: grid;
+  gap: 24px;
+  align-content: start;
+}
+.panel {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 28px;
+}
+.panel h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 16px 0 8px;
+}
+.panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.panel li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.panel li svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin-top: 4px;
+  color: #258d67;
+}
+.pricePanel {
+  align-self: start;
+  position: sticky;
+  top: 120px;
+}
+.price {
+  font-size: 32px;
+  color: #2358bf;
+  font-weight: 800;
+  margin: 8px 0 24px;
+}
+.facts {
+  display: grid;
+  gap: 16px;
+  margin: 24px 0;
+}
+.facts div {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 16px;
+}
+.facts svg {
+  width: 20px;
+  flex: none;
+  color: #3565b5;
+}
+.cta {
+  background: #edf3ff;
+  border-radius: 24px;
+  padding: 32px;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.cta h2 {
+  font-size: 26px;
+  font-weight: 750;
+  margin: 0 0 8px;
+  color: #203e7c;
+}
+.cta p {
+  margin: 0;
+  line-height: 1.8;
+  color: #52647d;
+}
+.form {
+  display: grid;
+  gap: 20px;
+}
+.form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+.form small,
+.status {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #52647d;
+}
+.status {
+  background: #edf3ff;
+  padding: 16px;
+  border-radius: 12px;
+}
+.error {
+  color: #b42318;
+  font-size: 16px;
+}
+.faq {
+  display: grid;
+  gap: 16px;
+  max-width: 880px;
+  margin: auto;
+}
+.faq details {
+  border: 1px solid #dce5f1;
+  border-radius: 16px;
+  background: white;
+  padding: 0 24px;
+}
+.faq summary {
+  min-height: 64px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 650;
+  padding: 20px 0;
+  color: #203e7c;
+}
+.faq p {
+  line-height: 1.8;
+  color: #52647d;
+  padding: 0 0 24px;
+  margin: 0;
+}
+.narrow {
+  max-width: 900px;
+  margin: auto;
+}
+.back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: #2458b8;
+  margin-bottom: 20px;
+}
+.timeline {
+  border-left: 2px solid #d4e1f6;
+  padding-left: 24px;
+}
+.timeline section + section {
+  margin-top: 24px;
+}
+.contactLink {
+  color: #2458b8;
+  overflow-wrap: anywhere;
+}
+.heroMeta {
+  background: #eaf1ff;
+  padding: 20px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  font-size: 16px;
+  color: #29466f;
+}
+.heroMeta span {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.heroMeta svg {
+  width: 20px;
+}
+.gridWide {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.programIntro {
+  max-width: 720px;
+  margin-bottom: 32px;
+}
+.programIntro p {
+  line-height: 1.8;
+  color: #52647d;
+}
+.form button {
+  justify-self: start;
+}
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  .container {
+    padding: 32px 20px;
+  }
+  .catalogue,
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+  .filters {
+    padding: 20px;
+  }
+  .grid,
+  .gridWide {
+    grid-template-columns: 1fr;
+  }
+  .pricePanel {
+    position: static;
+    grid-row: 1;
+  }
+  .panel {
+    padding: 22px;
+  }
+  .cta {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+  }
+  .toolbar {
+    flex-wrap: wrap;
+  }
+  .price {
+    font-size: 28px;
+  }
+}
