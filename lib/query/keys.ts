@@ -1,4 +1,5 @@
 export const queryKeys = {
+  traffic: { summary: (organizationId:string) => ['traffic',organizationId] as const },
   users: {
     all: ['users'] as const,
     lists: () => [...queryKeys.users.all, 'list'] as const,

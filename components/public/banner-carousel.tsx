@@ -14,6 +14,7 @@ export function BannerCarousel({entries}:{entries:ContentEntry[]}) {
   return <section className={s.carousel} aria-label={t('title')} onMouseEnter={()=>setPaused(true)} onFocusCapture={()=>setPaused(true)}>
     {entries.map((entry,index)=><div key={entry.id} className={`${s.slide} ${index===active?s.active:''}`} aria-hidden={index!==active} inert={index!==active}>
       {entry.image && <BannerImage entry={entry} first={index===0} />}
+      {entry.body && <div className={s.copy}><h1>{entry.title}</h1><p>{entry.body}</p></div>}
       {entry.link && <Link href={entry.link} className={s.target} aria-label={entry.title} />}
     </div>)}
     <div className={s.controls}><button type="button" aria-label={t('previous')} onClick={()=>setActive(i=>(i-1+entries.length)%entries.length)}><ChevronLeft /></button><span>{active+1} / {entries.length}</span><button type="button" aria-label={t('next')} onClick={()=>setActive(i=>(i+1)%entries.length)}><ChevronRight /></button><button type="button" aria-label={t(paused?'play':'pause')} onClick={()=>setPaused(p=>!p)}>{paused?<Play />:<Pause />}</button></div>

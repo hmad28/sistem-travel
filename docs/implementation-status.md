@@ -4,18 +4,25 @@ Dokumen ini membedakan pekerjaan yang teruji dari permintaan yang belum selesai.
 
 ## Sudah diimplementasikan
 
+- Ringkasan CMS memuat trafik nyata per organisasi, grafik 7/30 hari, halaman populer, perangkat dan aktivitas terbaru; tanpa Socket.IO. Migrasi 0006 menambahkan tabel khusus kunjungan.
+- 12 konten DEMO sudah diterbitkan pada organisasi Hammad Tour, seluruh koleksi CMS terisi. Seed kedua menambahkan nol entri (idempoten).
+
 - Editor tambah/ubah paket, deskripsi, harga, durasi, fasilitas, persyaratan, itinerary, foto UploadThing, status publikasi.
 - Form tambah/ubah keberangkatan dengan pilihan paket, tanggal, kuota, dan status buka/draf/tutup; perubahan kuota tidak boleh di bawah kursi terpakai, paket terkunci setelah ada pendaftaran.
 - Pendaftaran jamaah yang sudah tercatat ke keberangkatan; memesan kursi dan membuat invoice dalam satu transaksi.
 - Pembayaran cicilan dengan pemeriksaan sisa tagihan dan kunci idempotensi; kwitansi tersimpan otomatis.
 - Daftar pendaftaran dan kwitansi, pencarian dan ekspor data yang tampil.
 - Koleksi CMS banner, artikel, halaman informasi, galeri, cerita jamaah, dan FAQ; draf/publikasi; halaman publik membaca konten terbit.
-- Editor teks beranda per bagian dengan draf terpisah dari publikasi dan pemeriksaan versi sebelum menyimpan.
+- Editor "Isi halaman beranda" dihapus atas permintaan pengguna, termasuk menu, formulir dan aksi penyimpanannya. Alamat lama diarahkan ke CMS; teks publik yang sudah tersimpan tetap dibaca.
 - CMS media: gambar banner khusus HP, urutan tampil, tautan YouTube/Shorts untuk video jamaah, pratinjau gambar dan lepas gambar. Penyimpanan koleksi memeriksa versi entri agar edit lama tidak menimpa perubahan baru.
 - Pemutar video jamaah memakai tampilan vertikal dan baru memuat YouTube setelah pengunjung menekan Putar. Konten lama tetap terbaca tanpa migrasi.
 - Primary biru disamakan pada internal/CMS/logo; latar login hijau diganti biru gelap.
 
 ## Bukti pemeriksaan
+
+- Browser: semua 12 konten contoh muncul di beranda; tidak ada gambar gagal atau overflow horizontal pada viewport HP. Alamat editor beranda lama mengarah ke `/admin`.
+- API trafik: asal lintas situs dan rute internal ditolak; pengiriman pageview berulang tidak menggandakan catatan; heartbeat diperbarui; statistik tanpa login ditolak. Event pengujian dibersihkan, kunjungan lain tidak disentuh.
+- Migrasi diterapkan dengan `pnpm db:migrate`. `db:reset` tidak dijalankan karena database Neon aktif berisi data yang harus dipertahankan.
 
 - Uji browser menambahkan paket draf berlabel UJI INTERNAL, keberangkatan, jamaah uji, registrasi, lalu pembayaran cicilan.
 - Pembacaan database memastikan invoice Rp25 juta, pembayaran Rp5 juta, sisa Rp20 juta, status PARTIAL, tepat satu kwitansi. Seluruh fixture operasional ini dibersihkan; audit dipertahankan.

@@ -9,6 +9,7 @@ import { hasSessionPermission } from '@/lib/auth/permissions';
 import { readDb } from '@/db/read';
 import { travelPackages } from '@/db/schema';
 import { loadAppBranding } from '@/lib/branding/server';
+import { TrafficDashboard } from '@/components/travel/traffic-dashboard';
 
 export default async function CmsDashboardPage() {
   const context = await requireOrganizationContext();
@@ -38,6 +39,7 @@ export default async function CmsDashboardPage() {
         </Link>
       }
     >
+      <TrafficDashboard organizationId={context.organizationId} />
       <section className="cms-summary-grid">
         {[
           [t('total'), packages.length, PackageOpen],

@@ -6,6 +6,7 @@ import { BrandLogo } from '@/components/brand';
 import type { PublicPackage, PublicSiteData } from '@/lib/travel/public-site';
 import { formatIdr, formatIndonesianDate, parseDatabaseDate } from '@/lib/travel/format';
 import s from './public.module.css';
+import { VisitorTracker } from './visitor-tracker';
 
 export async function PublicShell({
   data,
@@ -24,6 +25,7 @@ export async function PublicShell({
   ] as const;
   return (
     <div className={s.site}>
+      <VisitorTracker />
       <header className={s.header}>
         <div className={`${s.container} ${s.headerInner}`}>
           <Link href="/" className={s.logo}>

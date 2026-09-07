@@ -22,13 +22,17 @@ Fondasi proyek berasal dari ForgeStart (MIT) dan sudah disesuaikan dengan Travel
 
 ## Ruang kerja
 
+Ringkasan CMS menampilkan trafik publik: aktif 5 menit, pengunjung hari ini/7/30 hari, grafik harian, halaman populer, perangkat, dan aktivitas terbaru. Data dimulai sejak pencatatan diaktifkan, bukan data dummy. Identitas peramban acak berlaku 30 hari; database menyimpan HMAC, bukan IP atau isi formulir. DNT/GPC dan bot yang dikenali tidak dicatat. Proteksi laju memakai Upstash bila tersedia; fallback memori hanya berlaku per instance serverless.
+
+Konten contoh tersedia melalui `pnpm exec tsx scripts/seed-cms-demo.ts`: menambahkan 12 entri berlabel DEMO tanpa mengganti entri lama. Video contoh adalah referensi eksternal Tazkia, bukan testimoni Hammad Tour. Ganti konten demo sebelum dipakai untuk promosi. Riwayat trafik belum memiliki penghapusan otomatis; ringkasan menampilkan rentang 30 hari.
+
 - `/`: website publik untuk calon jamaah.
 - `/umroh`, `/umroh-plus`, `/haji`, `/wisata-halal`: katalog perjalanan; `/paket/[slug]`: rincian paket; `/kontak`, `/faq`, `/tentang`: informasi calon jamaah.
 - `/admin`: CMS website, katalog paket terbit/draf dan pengaturan identitas.
 - `/admin/manajemen`: ringkasan internal, jamaah, keberangkatan, dokumen, dan pembayaran.
 - Tombol **CMS / Internal** mengganti seluruh navigasi, mengikuti pola Jam Wisata. `/admin/cms` tetap menjadi alias ringkasan CMS.
 
-CMS menyediakan editor paket, teks beranda, banner desktop/HP, artikel, halaman informasi, galeri, video/cerita jamaah, dan FAQ. Konten dapat diurutkan; video menerima tautan YouTube/Shorts. Teks beranda memiliki draf terpisah dari publikasi. Pemisahan ruang kerja tetap dilindungi pemeriksaan izin dan organisasi pada server.
+CMS menyediakan editor paket, banner desktop/HP, artikel, halaman informasi, galeri, video/cerita jamaah, dan FAQ. Konten dapat diurutkan; video menerima tautan YouTube/Shorts. Editor "Isi halaman beranda" telah dihapus; teks publik yang tersimpan tetap dipertahankan. Pemisahan ruang kerja tetap dilindungi pemeriksaan izin dan organisasi pada server.
 
 `/administrations/*` lama diarahkan ke pengaturan travel sederhana (kecuali profil pribadi). Panel database, migrasi, environment, dan diagnostik tidak menjadi layar klien. Indikator pemuatan tampil saat membuka halaman; beranda contoh diberi label data demo.
 

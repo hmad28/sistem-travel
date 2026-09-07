@@ -37,6 +37,7 @@ export * from './pilgrims';
 export * from './registrations';
 export * from './finance';
 export * from './pilgrim-documents';
+export * from './website-visits';
 
 export * from './security-logs';
 export * from './audit-logs';

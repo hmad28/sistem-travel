@@ -43,6 +43,13 @@
       "when": 1788669366200,
       "tag": "0005_wakeful_the_hood",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788771848975,
+      "tag": "0006_nappy_marvel_boy",
+      "breakpoints": true
     }
   ]
 }

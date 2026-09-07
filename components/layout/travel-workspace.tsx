@@ -37,7 +37,6 @@ export function TravelWorkspace({
   const t = useTranslations('workspace');
   const c = useTranslations('contentEditor');
   const w = useTranslations('workflow');
-  const home = useTranslations('homeEditor');
   const [open, setOpen] = useState(false);
   const canPilgrims = usePermission('pilgrim', 'view');
   const canDepartures = usePermission('departure', 'view');
@@ -101,7 +100,6 @@ export function TravelWorkspace({
         </div>
         <p className="workspace-section-label">{t(internal ? 'business' : 'content')}</p>
         <nav aria-label={t(internal ? 'internal' : 'cms')}>
-          {!internal && canCms && <Link href="/admin/cms/beranda" onClick={() => setOpen(false)} aria-current={path === '/admin/cms/beranda' ? 'page' : undefined}><LayoutDashboard /><span>{home('title')}</span><NavigationFeedback /></Link>}
           {entries
             .filter(([, key]) =>
               key === 'payments'

@@ -1,4 +1,9 @@
 {
+  "traffic": {
+    "title":"Statistik pengunjung website", "description":"Pantau kunjungan website publik. Diperbarui otomatis setiap 30 detik.",
+    "refresh":"Perbarui", "loading":"Memuat kunjungan…", "error":"Data kunjungan belum dapat dimuat.", "retry":"Coba lagi", "stale":"Pembaruan gagal. Angka di bawah adalah data terakhir yang berhasil dimuat.",
+    "liveVisitors":"Sedang aktif", "visitorsToday":"Hari ini", "visitors7Days":"7 hari terakhir", "visitors30Days":"30 hari terakhir", "liveNote":"Aktif dalam 5 menit terakhir", "uniqueNote":"Pengunjung unik", "trend":"Tren pengunjung", "range":"Rentang grafik", "days":"{count} hari", "graph":"Pengunjung {count} hari terakhir, tertinggi {max} per hari", "empty":"Belum ada kunjungan tercatat. Data mulai terkumpul setelah website dibuka pengunjung.", "dailyData":"Lihat angka per hari", "date":"Tanggal", "visitors":"Pengunjung", "popular":"Halaman populer hari ini", "viewsToday":"{count} tampilan halaman hari ini", "recent":"Aktivitas terbaru", "devices":"Perangkat hari ini", "mobile":"HP", "desktop":"Komputer", "tablet":"Tablet", "direct":"Langsung / dari website ini", "updated":"Terakhir diperbarui {time} WIB", "homepage":"Beranda", "measurement":"Dihitung per peramban, bukan identitas orang. Menghapus penyimpanan atau berpindah perangkat dapat terhitung sebagai pengunjung baru. Kunjungan tim ke halaman publik ikut dihitung."
+  },
   "homeEditor": {
     "title": "Isi halaman beranda",
     "description": "Ubah teks per bagian. Simpan draf untuk diperiksa, lalu Terbitkan untuk menampilkan perubahan di website.",
@@ -457,7 +462,7 @@
     "packageDescription": "Lihat harga, durasi, dan status publikasi paket.",
     "identity": "Identitas & pengaturan website",
     "identityDescription": "Perbarui nama travel, logo, dan informasi merek.",
-    "note": "Pengelolaan artikel, galeri, dan testimoni belum tersedia. Data jamaah dan transaksi berada di ruang kerja Internal.",
+    "note": "Kelola banner, halaman informasi, artikel, galeri, video jamaah, dan tanya jawab melalui menu CMS. Data jamaah dan transaksi berada di ruang kerja Internal.",
     "previewTitle": "Perjalanan ibadah yang lebih tenang.",
     "connected": "Terhubung dengan website publik",
     "connectedDescription": "Paket yang diterbitkan dibaca dari data yang sama dengan manajemen internal."
