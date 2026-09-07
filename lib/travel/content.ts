@@ -10,7 +10,7 @@ import {
 } from '@/lib/validation/travel-content';
 export { contentEntrySchema, type ContentEntry } from '@/lib/validation/travel-content';
 
-export const contentKinds = ['banner', 'page', 'article', 'gallery', 'testimonial', 'faq'] as const;
+export const contentKinds = ['banner', 'article', 'gallery', 'testimonial', 'faq'] as const;
 export type ContentKind = (typeof contentKinds)[number];
 export const contentKey = (org: string, kind: ContentKind) => `travel.${org}.content.${kind}`;
 export async function getContent(org: string, kind: ContentKind): Promise<ContentEntry[]> {

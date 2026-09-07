@@ -1,4 +1,4 @@
-.carousel {position:relative;height:calc(100dvh - 100px);min-height:480px;max-height:1000px;background:#1d3172;overflow:hidden;}
+.carousel {position:relative;height:100dvh;min-height:600px;max-height:1100px;background:#1d3172;overflow:hidden;}
 .slide {position:absolute;inset:0;opacity:0;transform:scale(1.05);transition:opacity 1500ms ease-in-out,transform 1500ms ease-in-out;}
 .active {opacity:1;transform:scale(1);}
 .slide img {width:100%;height:100%;object-fit:cover;}
@@ -8,5 +8,10 @@
 .controls button {width:44px;height:44px;display:grid;place-items:center;border-radius:50%;cursor:pointer;}
 .controls button:hover {background:#eaf0f8;}
 .controls button:focus-visible {outline:3px solid #195acb;}
-@media(max-width:767px){.carousel{height:calc(100dvh - 80px);min-height:500px;}}
+.carousel .copy h1,.carousel .copy p{color:#fff}
+.copy{padding-top:140px;padding-inline:clamp(70px,8vw,130px)}
+.arrow{position:absolute;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:48px;height:48px;background:#ffffff20;border:1px solid #ffffff80;border-radius:50%;color:#fff;cursor:pointer;backdrop-filter:blur(8px)}
+.arrow:hover{background:#ffffff40}.arrow:focus-visible{outline:3px solid white;outline-offset:4px}.previous{left:20px}.next{right:20px}
+.controls{background:#10254b70;color:#fff;padding-left:18px}.controls button:hover{background:#ffffff20}
+@media(max-width:767px){.carousel{height:100dvh;min-height:620px}.copy{padding-inline:60px;padding-top:120px}.copy h1{font-size:32px}.previous{left:8px}.next{right:8px}.arrow{width:44px;height:44px}}
 @media(prefers-reduced-motion:reduce){.slide{transition:none;transform:none;}}

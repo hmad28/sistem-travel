@@ -1,0 +1,6 @@
+.gallery{margin-top:24px}.toolbar{display:flex;justify-content:flex-end;margin-bottom:16px}.toolbar button{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border:1px solid #dce4ee;border-radius:8px;color:#195acb;cursor:pointer}
+.viewport{overflow:hidden;margin-top:20px;mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent)}.track{display:flex;width:max-content;animation:marquee 45s linear infinite}.reverse{animation-direction:reverse;animation-duration:50s}.group{display:flex;gap:20px;padding-right:20px;flex-shrink:0}.group figure{position:relative;width:360px;height:250px;overflow:hidden;border-radius:16px;background:#eaf0f8}.group img{width:100%;height:100%;object-fit:cover}.group figcaption{position:absolute;bottom:0;inset-inline:0;padding:32px 20px 16px;background:linear-gradient(transparent,#10254bdd);color:#fff;font-size:16px;line-height:1.5}
+.gallery[data-paused=true] .track,.viewport:hover .track{animation-play-state:paused}
+@keyframes marquee{to{transform:translateX(-50%)}}
+@media(max-width:767px){.group figure{width:260px;height:190px}.group{gap:14px;padding-right:14px}}
+@media(prefers-reduced-motion:reduce){.track{animation:none}.viewport{overflow-x:auto;mask-image:none}.group[aria-hidden=true]{display:none}}

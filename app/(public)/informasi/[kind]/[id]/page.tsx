@@ -6,8 +6,8 @@ import { PilgrimVideo } from '@/components/public/pilgrim-video';
 export default async function Page({ params }: { params: Promise<{ kind: string; id: string }> }) {
   const { kind, id } = await params;
   const data = await getPublicSite();
-  if (!['page', 'article', 'gallery', 'testimonial'].includes(kind)) notFound();
-  const entry = data.content[kind as 'page'].find((e) => e.id === id);
+  if (!['article', 'gallery', 'testimonial'].includes(kind)) notFound();
+  const entry = data.content[kind as 'article' | 'gallery' | 'testimonial'].find((e) => e.id === id);
   if (!entry) notFound();
   return (
     <PublicShell data={data}>

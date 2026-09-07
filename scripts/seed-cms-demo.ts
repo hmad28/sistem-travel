@@ -11,10 +11,6 @@ const examples = {
     ['DEMO — Perjalanan ibadah dimulai di sini', 'Kenali pilihan paket, lihat jadwal, dan konsultasikan rencana perjalanan bersama tim travel. Konten contoh untuk peninjauan desain.', '/images/makkah.jpg', '/umroh'],
     ['DEMO — Siapkan perjalanan dengan tenang', 'Informasi perjalanan dalam satu tempat. Jadwal, fasilitas, dan harga mengikuti paket yang dipilih. Bukan penawaran keberangkatan nyata.', '/images/makkah-city.png', '/kontak'],
   ],
-  page: [
-    ['DEMO — Cara mendaftar perjalanan', 'Konten contoh, bukan ketentuan layanan resmi.\n\n1. Pilih paket yang sesuai kebutuhan.\n2. Hubungi tim travel untuk memastikan jadwal dan kursi.\n3. Lengkapi data jamaah dan dokumen yang diminta.\n4. Periksa tagihan sebelum melakukan pembayaran.\n5. Simpan bukti pembayaran dan ikuti arahan persiapan keberangkatan.', '/images/makkah-city.png', ''],
-    ['DEMO — Mengenal layanan travel', 'Halaman ini memperlihatkan contoh profil layanan.\n\nTim travel membantu calon jamaah memahami paket, jadwal, fasilitas, dan persiapan perjalanan. Informasi badan usaha, izin, alamat, dan kontak resmi perlu dilengkapi pemilik sebelum website digunakan untuk penjualan.', '/images/makkah.jpg', ''],
-  ],
   article: [
     ['DEMO — Menyiapkan daftar kebutuhan perjalanan', 'Artikel contoh untuk meninjau tampilan website.\n\nMulailah dengan daftar sederhana: dokumen, pakaian, perlengkapan pribadi, dan nomor kontak tim pendamping. Pisahkan barang yang diperlukan selama penerbangan dari barang di koper.\n\nMintalah daftar persiapan terbaru dari travel sesuai paket Anda. Ketentuan bagasi dan dokumen dapat berbeda untuk setiap perjalanan.', '/images/makkah-city.png', ''],
     ['DEMO — Membaca informasi paket dengan teliti', 'Artikel contoh, bukan rekomendasi paket tertentu.\n\nPeriksa tanggal berangkat dan pulang, durasi perjalanan, hotel, maskapai, serta rincian biaya yang termasuk dan tidak termasuk. Catat pertanyaan sebelum berkonsultasi.\n\nPastikan informasi akhir dikonfirmasi oleh petugas travel sebelum membayar.', '/images/makkah.jpg', ''],

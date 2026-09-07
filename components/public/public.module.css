@@ -64,6 +64,11 @@
   justify-content: space-between;
   gap: 24px;
 }
+.homeHeader{position:fixed;left:0;right:0;transition:background .25s,border-color .25s,box-shadow .25s}
+.homeHeader[data-transparent=true]{background:transparent;border-color:transparent;box-shadow:none}
+.homeHeader[data-transparent=true] .logo,.homeHeader[data-transparent=true] .nav,.homeHeader[data-transparent=true] .mobileNav>summary{color:white}
+.homeHeader[data-transparent=true] .nav>a:hover{color:white;background:#ffffff20}
+.homeHeader[data-transparent=true] .nav>a:last-child{background:#ffffff20;border:1px solid #ffffff80}
 .logo {
   display: flex;
   align-items: center;

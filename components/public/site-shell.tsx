@@ -7,6 +7,7 @@ import type { PublicPackage, PublicSiteData } from '@/lib/travel/public-site';
 import { formatIdr, formatIndonesianDate, parseDatabaseDate } from '@/lib/travel/format';
 import s from './public.module.css';
 import { VisitorTracker } from './visitor-tracker';
+import { ScrollHeader } from './scroll-header';
 
 export async function PublicShell({
   data,
@@ -26,7 +27,7 @@ export async function PublicShell({
   return (
     <div className={s.site}>
       <VisitorTracker />
-      <header className={s.header}>
+      <ScrollHeader>
         <div className={`${s.container} ${s.headerInner}`}>
           <Link href="/" className={s.logo}>
             <BrandLogo name={data.brand.name} logoUrl={data.brand.logoUrl} className="size-11" />
@@ -59,7 +60,7 @@ export async function PublicShell({
             </nav>
           </details>
         </div>
-      </header>
+      </ScrollHeader>
       <main>{children}</main>
       <footer className={s.footer}>
         <div className={s.container}>

@@ -52,6 +52,8 @@
   },
   "carousel": {"title":"Banner perjalanan","next":"Banner berikutnya","previous":"Banner sebelumnya","play":"Putar banner","pause":"Jeda banner"},
   "contentEditor": {
+    "pauseGallery": "Jeda galeri",
+    "playGallery": "Jalankan galeri",
     "mobileImage": "Gambar banner untuk HP (opsional)",
     "videoUrl": "Tautan video YouTube (opsional)",
     "videoHelp": "Tempel tautan YouTube atau Shorts. Gunakan video milik travel atau yang sudah mendapat izin jamaah.",
@@ -462,7 +464,7 @@
     "packageDescription": "Lihat harga, durasi, dan status publikasi paket.",
     "identity": "Identitas & pengaturan website",
     "identityDescription": "Perbarui nama travel, logo, dan informasi merek.",
-    "note": "Kelola banner, halaman informasi, artikel, galeri, video jamaah, dan tanya jawab melalui menu CMS. Data jamaah dan transaksi berada di ruang kerja Internal.",
+    "note": "Kelola banner, artikel, galeri, video jamaah, dan tanya jawab melalui menu CMS. Data jamaah dan transaksi berada di ruang kerja Internal.",
     "previewTitle": "Perjalanan ibadah yang lebih tenang.",
     "connected": "Terhubung dengan website publik",
     "connectedDescription": "Paket yang diterbitkan dibaca dari data yang sama dengan manajemen internal."

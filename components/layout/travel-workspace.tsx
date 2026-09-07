@@ -135,7 +135,7 @@ export function TravelWorkspace({
             })}
           {!internal &&
             canCms &&
-            (['banner', 'page', 'article', 'gallery', 'testimonial', 'faq'] as const).map(
+            (['banner', 'article', 'gallery', 'testimonial', 'faq'] as const).map(
               (kind) => (
                 <Link
                   key={kind}

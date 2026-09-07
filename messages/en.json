@@ -52,6 +52,8 @@
   },
   "carousel": {"title":"Travel banners","next":"Next banner","previous":"Previous banner","play":"Play banners","pause":"Pause banners"},
   "contentEditor": {
+    "pauseGallery": "Pause gallery",
+    "playGallery": "Play gallery",
     "mobileImage": "Mobile banner image (optional)",
     "videoUrl": "YouTube video link (optional)",
     "videoHelp": "Paste a YouTube or Shorts link. Use your travel company's video or obtain the pilgrim's permission.",
@@ -422,7 +424,7 @@
     "packageDescription": "Review prices, duration, and publication status.",
     "identity": "Website identity & settings",
     "identityDescription": "Update your travel business name, logo, and branding.",
-    "note": "Manage banners, information pages, articles, galleries, pilgrim videos and FAQs from the CMS menu. Pilgrim records and transactions are in the Internal workspace.",
+    "note": "Manage banners, articles, galleries, pilgrim videos and FAQs from the CMS menu. Pilgrim records and transactions are in the Internal workspace.",
     "previewTitle": "A more peaceful pilgrimage.",
     "connected": "Connected to the public website",
     "connectedDescription": "Published packages share the same data as internal management."

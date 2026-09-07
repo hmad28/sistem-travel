@@ -105,10 +105,10 @@ export const getPublicSite = cache(async (): Promise<PublicSiteData> => {
     }));
   const validPhone = (value: string | null) =>
     value && !['6281234567890', '081234567890'].includes(value.replace(/\D/g, '')) ? value : '';
-  const [banner,page,article,gallery,testimonial,faq] = await Promise.all((['banner','page','article','gallery','testimonial','faq'] as const).map(async kind=>(await getContent(organization.id,kind)).filter(entry=>entry.published)));
+  const [banner,article,gallery,testimonial,faq] = await Promise.all((['banner','article','gallery','testimonial','faq'] as const).map(async kind=>(await getContent(organization.id,kind)).filter(entry=>entry.published)));
   return {
     homeText: (await getHomeContent(organization.id)).published,
-    content: {banner,page,article,gallery,testimonial,faq},
+    content: {banner,page:[],article,gallery,testimonial,faq},
     brand,
     contact: {
       phone: validPhone(organization.phone),
