@@ -1,0 +1,27 @@
+.screen {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 40px 24px;
+  background: radial-gradient(ellipse at 50% 42%, #eaf2ff 0%, #f8faff 38%, #fff 72%);
+  color: #173466;
+  font-family: var(--font-jakarta), sans-serif;
+}
+.content { width: 100%; max-width: 440px; text-align: center; }
+.journey { position: relative; width: 180px; height: 180px; margin: 0 auto 32px; display: grid; place-items: center; }
+.outerRing { position: absolute; inset: 0; border: 1px solid #dbe7f9; border-radius: 50%; }
+.route { position: absolute; inset: 17px; border: 1px dashed #afc7ec; border-radius: 50%; }
+.mark { display: grid; place-items: center; width: 96px; height: 96px; border: 1px solid #fff; border-radius: 28px; background: #fff; box-shadow: 0 10px 35px #1d4f9e14; }
+.mark img { display: block; width: 64px; height: 64px; }
+.orbit { position: absolute; inset: 17px; animation: orbit 6s linear infinite; }
+.plane { position: absolute; top: -16px; left: calc(50% - 16px); display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: #f2f7ff; color: #195acb; transform: rotate(45deg); }
+.brand { margin: 0 0 12px; color: #195acb; font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.title { margin: 0; font-family: var(--font-manrope), sans-serif; font-size: clamp(26px, 4vw, 34px); font-weight: 750; letter-spacing: -.035em; line-height: 1.25; color: #173466; }
+.description { margin: 14px auto 0; max-width: 320px; font-size: 16px; line-height: 1.8; color: #5c6f8b; }
+.track { position: relative; width: 112px; height: 3px; overflow: hidden; margin: 30px auto 0; border-radius: 99px; background: #dce7f7; }
+.track span { position: absolute; inset: 0 auto 0 0; width: 45%; border-radius: inherit; background: #195acb; animation: glide 1.8s ease-in-out infinite; }
+@keyframes orbit { to { transform: rotate(360deg); } }
+@keyframes glide { from { transform: translateX(-110%); } to { transform: translateX(330%); } }
+@media (max-width: 480px) { .journey { margin-bottom: 28px; } }
+@media (prefers-reduced-motion: reduce) { .orbit, .track span { animation: none; } .track span { left: 27.5%; } }
