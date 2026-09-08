@@ -1,3 +1,4 @@
+import { requestOrigin } from '@/lib/request-origin';
 import { NextResponse } from 'next/server';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
       expiresAt: new Date(Date.now() + 60 * 60 * 1000),
     });
 
-    const resetUrl = `${env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${token}`;
+    const resetUrl = `${requestOrigin(request.headers)}/auth/reset-password?token=${token}`;
     const recipientName =
       [user.firstName, user.lastName].filter(Boolean).join(' ').trim() ||
       user.name ||

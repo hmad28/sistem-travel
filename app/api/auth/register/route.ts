@@ -1,9 +1,9 @@
+import { requestOrigin } from '@/lib/request-origin';
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { roles, userRoles, users } from '@/db/schema';
-import { env } from '@/env';
 import { handleRouteError, jsonError, parseJson } from '@/lib/api/response';
 import { logSecurityEvent } from '@/lib/auth/session-data';
 import { sendVerificationEmail } from '@/lib/auth/email-verification';
@@ -62,7 +62,7 @@ export async function POST(request: Request) {
       request,
     });
 
-    sendVerificationEmail(result.user, env.NEXT_PUBLIC_APP_URL).catch((err) => {
+    sendVerificationEmail(result.user, requestOrigin(request.headers)).catch((err) => {
       console.error('[REGISTER_VERIFY_EMAIL]', err);
     });
 

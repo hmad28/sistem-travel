@@ -10,7 +10,6 @@ const serverSchema = z
     AUTH_SECRET: z
       .string()
         .min(32, 'AUTH_SECRET must be at least 32 characters. Run `pnpm setup` to generate one.'),
-    AUTH_URL: z.string().url().default('http://localhost:3000'),
     DATABASE_URL: z
       .string()
       .regex(/^postgres(ql)?:\/\//, 'DATABASE_URL must be a postgres:// connection string'),
@@ -87,12 +86,10 @@ const serverSchema = z
   });
 
 const clientSchema = z.object({
-  NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
 });
 
 const processEnv = {
   AUTH_SECRET: process.env.AUTH_SECRET,
-  AUTH_URL: process.env.AUTH_URL,
   DATABASE_URL: process.env.DATABASE_URL,
   DATABASE_URL_POOLED: process.env.DATABASE_URL_POOLED,
   SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL,
@@ -129,7 +126,6 @@ const processEnv = {
   PLAYWRIGHT_BASE_URL: process.env.PLAYWRIGHT_BASE_URL,
   PLAYWRIGHT_USER_EMAIL: process.env.PLAYWRIGHT_USER_EMAIL,
   PLAYWRIGHT_USER_PASSWORD: process.env.PLAYWRIGHT_USER_PASSWORD,
-  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
 };
 
 type ServerEnv = z.infer<typeof serverSchema>;

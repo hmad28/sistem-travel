@@ -37,16 +37,9 @@ export async function GET() {
   const checks: DoctorCheck[] = [
     // core
     { name: 'DATABASE_URL', ok: Boolean(process.env.DATABASE_URL), required: true, group: 'core' },
-    { name: 'AUTH_URL', ok: Boolean(process.env.AUTH_URL), required: true, group: 'core' },
     {
       name: 'AUTH_SECRET',
       ok: Boolean(process.env.AUTH_SECRET && process.env.AUTH_SECRET.length >= 32),
-      required: true,
-      group: 'core',
-    },
-    {
-      name: 'NEXT_PUBLIC_APP_URL',
-      ok: Boolean(process.env.NEXT_PUBLIC_APP_URL),
       required: true,
       group: 'core',
     },
@@ -169,9 +162,7 @@ export async function GET() {
     checks,
     environment: {
       DATABASE_URL: mask(process.env.DATABASE_URL),
-      AUTH_URL: process.env.AUTH_URL ?? null,
       AUTH_SECRET: flag(process.env.AUTH_SECRET),
-      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL ?? null,
       APP_PORT: process.env.APP_PORT ?? process.env.PORT ?? null,
       APP_TIMEZONE: process.env.APP_TIMEZONE ?? null,
       STORAGE_DRIVER: storageDriver,

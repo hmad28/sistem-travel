@@ -1,3 +1,4 @@
+import { requestOrigin } from '@/lib/request-origin';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { handleRouteError, parseJson } from '@/lib/api/response';
@@ -9,7 +10,7 @@ export async function POST(request: Request) {
   try {
     const parsed = await parseJson(request, verifyEmailSchema);
     if (!parsed.ok) return parsed.response;
-    const outcome = await verifyEmailToken(parsed.data.token);
+    const outcome = await verifyEmailToken(parsed.data.token, requestOrigin(request.headers));
     if (!outcome.ok) {
       return NextResponse.json(
         { ok: false, reason: outcome.reason ?? 'invalid' },

@@ -1,8 +1,8 @@
+import { requestOrigin } from '@/lib/request-origin';
 import { NextResponse } from 'next/server';
 import { desc, eq } from 'drizzle-orm';
 import { db } from '@/db';
 import { invitations, organizations, roles, users } from '@/db/schema';
-import { env } from '@/env';
 import { handleRouteError, jsonError, parseJson } from '@/lib/api/response';
 import { requireApiPermission } from '@/lib/auth/server-permissions';
 import { invitationCreateSchema } from '@/lib/validation/admin';
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
       })
       .returning();
 
-    const acceptUrl = `${env.NEXT_PUBLIC_APP_URL}/auth/accept-invite?token=${token}`;
+    const acceptUrl = `${requestOrigin(request.headers)}/auth/accept-invite?token=${token}`;
 
     const inviter = authz.session.user;
     const inviterName =

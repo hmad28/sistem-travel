@@ -4,7 +4,6 @@ import { randomUUID } from 'node:crypto';
 import { and, eq } from 'drizzle-orm';
 import { createNodeDb } from '../db/node';
 import { organizations, websiteVisits } from '../db/schema';
-import { env } from '../env';
 
 const {db,pool}=createNodeDb();
 const eventId=randomUUID();
@@ -13,7 +12,7 @@ try {
   const [org]=await db.select({id:organizations.id}).from(organizations).where(eq(organizations.slug,'hammad-tour'));
   assert.ok(org);orgId=org.id;
   const event={eventId,visitorId:randomUUID(),path:'/',type:'pageview'};
-  const send=(body:unknown,origin=new URL(env.NEXT_PUBLIC_APP_URL).origin)=>fetch('http://localhost:3000/api/traffic',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,'User-Agent':'Mozilla/5.0 Chrome/140.0 Safari/537.36'},body:JSON.stringify(body)});
+  const send=(body:unknown,origin='http://localhost:3000')=>fetch('http://localhost:3000/api/traffic',{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,'User-Agent':'Mozilla/5.0 Chrome/140.0 Safari/537.36'},body:JSON.stringify(body)});
   assert.equal((await send(event,'https://invalid.example')).status,403);
   assert.equal((await send({...event,path:'/admin'})).status,400);
   assert.equal((await send(event)).status,204);

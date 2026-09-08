@@ -1,11 +1,12 @@
 'use server';
 
-import { env } from '@/env';
+import { headers } from 'next/headers';
+import { requestOrigin } from '@/lib/request-origin';
 import { failure, success, withAuth, withRateLimit } from '@/lib/actions';
 import { resendVerificationEmail } from '@/lib/auth/email-verification';
 
 async function getAppUrl(): Promise<string> {
-  return env.NEXT_PUBLIC_APP_URL;
+  return requestOrigin(await headers());
 }
 
 export const resendVerificationEmailAction = withAuth(async (session) => {

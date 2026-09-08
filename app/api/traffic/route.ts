@@ -1,3 +1,4 @@
+import { requestOrigin } from '@/lib/request-origin';
 import { createHmac } from 'node:crypto';
 import { and, eq, gte, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
@@ -11,7 +12,8 @@ import { jsonError } from '@/lib/api/response';
 export async function POST(request:Request) {
   const headers={'Cache-Control':'no-store'};
   const skip=()=>new Response(null,{status:204,headers});
-  if(request.headers.get('origin') !== new URL(env.NEXT_PUBLIC_APP_URL).origin) return jsonError('Forbidden',403);
+  try { if(request.headers.get('origin') !== requestOrigin(request.headers)) return jsonError('Forbidden',403); }
+  catch { return jsonError('Forbidden',403); }
   if(request.headers.get('dnt')==='1' || request.headers.get('sec-gpc')==='1' || !isHumanAgent(request.headers.get('user-agent')??''))return skip();
   if(Number(request.headers.get('content-length')??0)>2048)return jsonError('Payload too large',413);
   try {

@@ -3,7 +3,6 @@ import { and, eq, gt, isNull } from 'drizzle-orm';
 import { db } from '@/db';
 import { emailVerificationTokens, users } from '@/db/schema';
 import type { User } from '@/db/types';
-import { env } from '@/env';
 import { sendEmail } from '@/lib/email';
 import { VerifyEmail, WelcomeEmail } from '@/lib/email/templates';
 import { generateToken, hashToken } from '@/lib/tokens';
@@ -90,7 +89,7 @@ interface VerifiedRecipient {
   name: string | null;
 }
 
-export async function verifyEmailToken(token: string): Promise<VerifyOutcome> {
+export async function verifyEmailToken(token: string, appUrl: string): Promise<VerifyOutcome> {
   if (!token || token.length < 20) return { ok: false, reason: 'invalid' };
 
   const tokenHash = hashToken(token);
@@ -143,7 +142,6 @@ export async function verifyEmailToken(token: string): Promise<VerifyOutcome> {
 
   if (recipient) {
     const verifiedRecipient: VerifiedRecipient = recipient;
-    const appUrl = env.NEXT_PUBLIC_APP_URL;
     const recipientName =
       [verifiedRecipient.firstName, verifiedRecipient.lastName].filter(Boolean).join(' ').trim() ||
       verifiedRecipient.name ||

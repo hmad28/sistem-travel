@@ -71,11 +71,9 @@ Nilai wajib:
 
 ```env
 AUTH_SECRET=<minimal 32 karakter>
-AUTH_URL=http://localhost:3000
 DATABASE_URL=postgresql://...
 SUPER_ADMIN_EMAIL=admin@hammadtour.id
 SUPER_ADMIN_PASSWORD=<password aman>
-NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 Untuk Neon, isi `DATABASE_URL` dengan URL direct/serverless dan `DATABASE_URL_POOLED` dengan URL pooled. Integrasi produksi tambahan:
@@ -117,8 +115,10 @@ Atau jalankan semuanya dengan `pnpm verify`. Untuk perubahan database, jalankan 
 ## Deploy ke Vercel
 
 1. Buat proyek Neon dan pasang semua environment variables di Vercel.
-   `AUTH_URL` dan `NEXT_PUBLIC_APP_URL` wajib memakai domain HTTPS deployment,
-   bukan `http://localhost:3000`. Tambahkan juga `AUTH_TRUST_HOST=true`.
+   Domain mengikuti Host request secara otomatis. Tidak perlu variabel URL aplikasi.
+   Hapus variabel lama `AUTH_URL`, `NEXTAUTH_URL`, dan `NEXT_PUBLIC_APP_URL` di Vercel, lalu redeploy.
+   Untuk pindah subdomain, cukup pasang domain dan DNS di Vercel. Login ulang pada domain baru.
+   Reverse proxy di luar Vercel harus memvalidasi Host dan tidak menerima host sembarang.
 2. Jalankan `pnpm db:migrate` dan `pnpm db:seed` dari lingkungan aman.
 3. Gunakan build command `pnpm build` dan deploy.
 4. Tambahkan `UPLOADTHING_TOKEN` untuk upload serta kredensial Resend untuk email nyata.

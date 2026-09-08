@@ -32,7 +32,6 @@ addCheck(
   Boolean(process.env.AUTH_SECRET),
   process.env.AUTH_SECRET ? 'set' : 'missing'
 );
-addCheck('AUTH_URL', Boolean(process.env.AUTH_URL), process.env.AUTH_URL ?? 'missing');
 
 if (process.env.DATABASE_URL) {
   const pool = new Pool({
