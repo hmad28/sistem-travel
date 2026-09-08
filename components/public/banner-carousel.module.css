@@ -4,14 +4,15 @@
 .slide img {width:100%;height:100%;object-fit:cover;}
 .target {position:absolute;inset:0;}
 .copy{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:clamp(24px,7vw,100px);padding-bottom:120px;background:linear-gradient(90deg,#10254bdd,#10254b22);color:white;pointer-events:none}.copy h1{max-width:780px;font-size:clamp(32px,4.5vw,64px);font-weight:700;line-height:1.12;letter-spacing:-1px}.copy p{max-width:620px;font-size:clamp(16px,1.5vw,20px);line-height:1.7;margin-top:24px}
-.controls {position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;background:#fff;color:#195acb;border-radius:32px;padding:6px;box-shadow:0 4px 20px #182f6933;}
-.controls button {width:44px;height:44px;display:grid;place-items:center;border-radius:50%;cursor:pointer;}
-.controls button:hover {background:#eaf0f8;}
-.controls button:focus-visible {outline:3px solid #195acb;}
+.dots {position:absolute;bottom:24px;left:50%;transform:translateX(-50%);display:flex;justify-content:center;flex-wrap:wrap;max-width:calc(100% - 32px);}
+.dots button {width:44px;height:44px;display:grid;place-items:center;border-radius:50%;cursor:pointer;background:transparent;border:0;}
+.dots button span {width:9px;height:9px;border-radius:50%;background:#ffffff66;border:1px solid #ffffffb3;box-shadow:0 1px 5px #10254b66;transition:background .2s,transform .2s;}
+.dots button[aria-current=true] span {background:#fff;transform:scale(1.35);}
+.dots button:hover span {background:#fff;}
+.dots button:focus-visible {outline:2px solid #fff;outline-offset:-4px;}
 .carousel .copy h1,.carousel .copy p{color:#fff}
 .copy{padding-top:140px;padding-inline:clamp(70px,8vw,130px)}
 .arrow{position:absolute;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:48px;height:48px;background:#ffffff20;border:1px solid #ffffff80;border-radius:50%;color:#fff;cursor:pointer;backdrop-filter:blur(8px)}
 .arrow:hover{background:#ffffff40}.arrow:focus-visible{outline:3px solid white;outline-offset:4px}.previous{left:20px}.next{right:20px}
-.controls{background:#10254b70;color:#fff;padding-left:18px}.controls button:hover{background:#ffffff20}
 @media(max-width:767px){.carousel{height:100dvh;min-height:620px}.copy{padding-inline:60px;padding-top:120px}.copy h1{font-size:32px}.previous{left:8px}.next{right:8px}.arrow{width:44px;height:44px}}
 @media(prefers-reduced-motion:reduce){.slide{transition:none;transform:none;}}
