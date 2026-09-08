@@ -44,6 +44,7 @@ const DEFAULT_RESOURCES = [
   { name: 'REGISTRATION', slug: 'registration', description: 'Pendaftaran jamaah' },
   { name: 'DOCUMENT', slug: 'document', description: 'Dokumen jamaah' },
   { name: 'FINANCE', slug: 'finance', description: 'Invoice dan pembayaran' },
+  { name: 'INVENTORY', slug: 'inventory', description: 'Stok perlengkapan jamaah' },
   { name: 'OPERATION', slug: 'operation', description: 'Operasional keberangkatan' },
   { name: 'CMS', slug: 'cms', description: 'Konten website publik' },
   { name: 'REPORT', slug: 'report', description: 'Laporan travel' },

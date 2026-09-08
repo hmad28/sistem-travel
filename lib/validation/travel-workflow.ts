@@ -40,11 +40,24 @@ export const departureEditorSchema = z
   })
   .refine((v) => v.returnDate > v.departureDate, { path: ['returnDate'], message: 'returnDate' });
 export const registrationEditorSchema = z.object({
+  requestId: z.uuid(),
   pilgrimId: z.uuid(),
   departureId: z.uuid(),
+  basePrice: amount.refine((v) => v > 0),
+  dpTarget: amount.refine((v) => v > 0).default(5000000),
+  initialInvoiceAmount: amount.refine((v) => v > 0).default(5000000),
+  payerName: z.string().trim().min(2).max(160),
+  payerPhone: z.string().trim().regex(/^\+?[0-9\s-]{8,20}$/),
+  roomType: z.enum(['QUAD', 'TRIPLE', 'DOUBLE']).default('QUAD'),
   discount: amount,
   additionalFee: amount,
   notes: z.string().trim().max(2000),
+});
+export const installmentInvoiceSchema = z.object({
+  requestId: z.uuid(),
+  registrationId: z.uuid(),
+  amount: amount.refine((v) => v > 0),
+  dueDate: date,
 });
 export const paymentEditorSchema = z.object({
   requestId: z.uuid(),

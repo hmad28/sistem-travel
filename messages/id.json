@@ -1,4 +1,6 @@
 {
+  "inventory": {"title":"Stok perlengkapan","description":"Catat barang yang benar-benar diterima dan diserahkan. Saldo mengikuti riwayat perubahan stok.","name":"Nama barang","unit":"Satuan","defaultUnit":"buah","minimum":"Batas stok minimum","balance":"Stok tersedia","status":"Status","detail":"Lihat rincian","create":"Tambah barang","edit":"Ubah informasi barang","archive":"Arsipkan barang","restore":"Aktifkan kembali","movement":"Catat perubahan stok","template":"Siapkan 10 perlengkapan umrah","templateHelp":"Menambahkan daftar perlengkapan dengan stok nol. Barang yang sudah ada tidak ditimpa atau digandakan. Catat stok masuk sesuai jumlah barang yang benar-benar diterima.","itemHelp":"Stok tidak diubah dari formulir ini. Gunakan Catat perubahan stok agar jumlah dan riwayatnya tetap sesuai.","archiveHelp":"Arsip menyembunyikan barang dari daftar aktif, tanpa menghapus riwayat. Stok harus nol sebelum barang diarsipkan.","restoreHelp":"Barang akan kembali tampil di daftar aktif. Riwayat sebelumnya tetap disimpan.","kind":"Jenis perubahan","IN":"Stok masuk","OUT":"Stok keluar","ADJUST":"Sesuaikan hasil hitung fisik","quantity":"Jumlah barang","actualCount":"Jumlah fisik yang terhitung","date":"Tanggal kejadian","note":"Keterangan / penerima","noteHint":"Contoh: diterima dari pemasok atau diserahkan kepada nama jamaah.","adjustHelp":"Isi jumlah barang yang benar-benar ada setelah dihitung, bukan selisihnya. Alasan penyesuaian wajib dicatat.","movementHelp":"Catat satu kali untuk setiap penerimaan atau penyerahan barang.","balancePreview":"Stok: {before} → {after} {unit}","confirmMovement":"Jumlah dan keterangan sudah saya periksa.","saved":"Perubahan berhasil disimpan.","saving":"Menyimpan…","viewRecord":"Lihat data terbaru","denied":"Anda tidak memiliki akses ke stok perlengkapan.","invalid":"Periksa isian. Jumlah harus bilangan bulat, tanggal valid, dan keterangan minimal 3 karakter.","failed":"Perubahan belum tersimpan. Coba kembali dengan isian yang sama.","insufficient":"Stok tidak cukup. Muat ulang untuk melihat jumlah terbaru.","unchanged":"Jumlah tidak berubah. Tidak ada mutasi yang perlu dicatat.","future":"Tanggal kejadian tidak boleh di masa depan.","stale":"Stok atau informasi barang sudah berubah. Muat ulang sebelum menyimpan.","duplicate":"Permintaan ini sudah digunakan untuk perubahan lain. Muat ulang halaman.","notFound":"Barang tidak ditemukan di travel Anda.","archived":"Diarsipkan","archiveNonzero":"Barang masih memiliki stok. Selesaikan atau sesuaikan pencatatan fisiknya sebelum mengarsipkan.","active":"Barang aktif","low":"Perlu diisi ulang","available":"Tersedia","activeItems":"Jenis barang aktif","lowItems":"Barang mencapai batas minimum","lowHelp":"Buka daftar barang yang perlu diisi ulang.","search":"Cari nama barang","show":"Tampilkan","filter":"Tampilkan hasil","empty":"Tidak ada barang yang sesuai. Tambahkan barang atau gunakan daftar perlengkapan umrah.","pagination":"Halaman daftar","page":"Halaman {page}","previous":"Sebelumnya","next":"Berikutnya","back":"Kembali ke daftar barang","history":"Riwayat perubahan stok","historyHelp":"Urutan mengikuti waktu pencatatan. Tanggal kejadian dapat berbeda. Kesalahan diperbaiki lewat mutasi baru, bukan menghapus riwayat.","change":"Perubahan","before":"Stok sebelum","after":"Stok setelah","noHistory":"Belum ada perubahan stok."},
+  "booking": {"select":"Paket & jamaah","pricing":"Harga & tagihan awal","payer":"Data pembayar","review":"Periksa pendaftaran","basePrice":"Harga yang disepakati","discount":"Diskon","additionalFee":"Biaya tambahan","dpTarget":"Target DP","initialInvoiceAmount":"Nominal tagihan pertama","roomType":"Pilihan kamar","QUAD":"Quad · 4 orang","TRIPLE":"Triple · 3 orang","DOUBLE":"Double · 2 orang","priceHelp":"Harga otomatis mengikuti paket. Ubah jika ada harga khusus yang sudah disepakati. Semua nominal dihitung per jamaah.","priceInvalid":"Periksa nominal: harga harus lebih dari nol, diskon tidak melebihi harga, serta DP dan tagihan tidak melebihi total.","total":"Total harga pendaftaran","due":"Batas pelunasan (H-30)","payerName":"Nama pembayar","payerPhone":"WhatsApp pembayar","copyPayer":"Salin data jamaah","addPilgrim":"Jamaah belum ada? Tambah data jamaah","openBooking":"Buka rincian pendaftaran","invoiceHelp":"Menyimpan pendaftaran menerbitkan tagihan pertama, bukan mencatat uang masuk. Catat pembayaran hanya setelah dana benar-benar diterima. Sisa harga tetap menjadi piutang meskipun belum ditagihkan.","confirm":"Saya sudah memeriksa harga, jamaah, pembayar, dan jadwal.","next":"Lanjut","save":"Simpan & terbitkan tagihan","saving":"Menyimpan pendaftaran…","paid":"Pembayaran diterima","outstanding":"Sisa pelunasan","issued":"Total sudah ditagihkan","unbilled":"Belum ditagihkan","issue":"Buat tagihan berikutnya","amount":"Nominal tagihan","dueDate":"Jatuh tempo tagihan","issueHelp":"Nominal maksimal adalah sisa harga yang belum pernah ditagihkan. Tagihan yang belum dibayar tetap diperhitungkan.","pay":"Catat pembayaran","invoices":"Riwayat tagihan","detail":"Rincian pendaftaran","UNPAID":"Belum bayar","DP":"DP","INSTALLMENT":"Cicilan","PAID":"Lunas","REFUND":"Refund","CANCELLED":"Dibatalkan"},
   "traffic": {
     "title":"Statistik pengunjung website", "description":"Pantau kunjungan website publik. Diperbarui otomatis setiap 30 detik.",
     "refresh":"Perbarui", "loading":"Memuat kunjungan…", "error":"Data kunjungan belum dapat dimuat.", "retry":"Coba lagi", "stale":"Pembaruan gagal. Angka di bawah adalah data terakhir yang berhasil dimuat.",
@@ -91,6 +93,15 @@
     "read": "Baca selengkapnya"
   },
   "workflow": {
+    "invoiceLimit": "Nominal tagihan atau DP melebihi sisa harga pendaftaran.",
+    "dueDateLimit": "Jatuh tempo tagihan tidak boleh melewati batas pelunasan H-30.",
+    "basePrice": "Harga yang disepakati",
+    "dpTarget": "Target DP",
+    "initialInvoiceAmount": "Nominal tagihan pertama",
+    "payerName": "Nama pembayar",
+    "payerPhone": "WhatsApp pembayar",
+    "roomType": "Pilihan kamar",
+    "requestId": "Nomor permintaan, muat ulang halaman jika bermasalah",
     "departureLimit": "Menampilkan maksimal 100 jadwal terbaru.",
     "seatsFull": "Kursi penuh",
     "closed": "Tutup pendaftaran",
@@ -382,7 +393,7 @@
     "dueHint": "Periksa sisa pembayaran dan hubungi jamaah.",
     "docsTitle": "Berkas belum lengkap",
     "docsHint": "Periksa berkas yang belum disetujui.",
-    "countInvoices": "{count} tagihan",
+    "countInvoices": "{count} jamaah belum lunas",
     "countRecords": "{count} pendaftaran",
     "nextDeparture": "Keberangkatan berikutnya",
     "noDeparture": "Belum ada jadwal keberangkatan.",
@@ -470,6 +481,7 @@
     "connectedDescription": "Paket yang diterbitkan dibaca dari data yang sama dengan manajemen internal."
   },
   "workspace": {
+    "inventory": "Stok perlengkapan",
     "cms": "CMS Website",
     "internal": "Manajemen Internal",
     "internalShort": "Internal",

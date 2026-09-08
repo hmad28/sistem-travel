@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Download, Search, X, ChevronRight, LoaderCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
@@ -10,10 +11,12 @@ export function SimpleRecords({
   headers,
   rows,
   title,
+  detailLinks,
 }: {
   headers: string[];
   rows: string[][];
   title: string;
+  detailLinks?: Record<string, string>;
 }) {
   const t = useTranslations('travelSimple');
   const [query, setQuery] = useState('');
@@ -91,13 +94,13 @@ export function SimpleRecords({
                     </td>
                   ))}
                   <td className="px-4">
-                    <button
+                    {detailLinks?.[row[0]] ? <Link href={detailLinks[row[0]]} className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap font-semibold text-primary">{t('details')}<ChevronRight className="size-4" /></Link> : <button
                       className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap font-semibold text-primary"
                       onClick={() => setSelected(row)}
                     >
                       {t('details')}
                       <ChevronRight className="size-4" />
-                    </button>
+                    </button>}
                   </td>
                 </tr>
               ))}

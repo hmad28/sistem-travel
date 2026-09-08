@@ -43,6 +43,7 @@ export function TravelWorkspace({
   const canFinance = usePermission('finance', 'view');
   const canCms = usePermission('cms', 'view');
   const canRegistration = usePermission('registration', 'view');
+  const canInventory = usePermission('inventory', 'view');
   const internal =
     path.startsWith('/travel') ||
     path.startsWith('/dashboard') ||
@@ -171,6 +172,7 @@ export function TravelWorkspace({
               <NavigationFeedback />
             </Link>
           )}
+          {internal && canInventory && <Link href="/admin/manajemen/stok" onClick={() => setOpen(false)} aria-current={path.startsWith('/admin/manajemen/stok') ? 'page' : undefined}><PackageOpen /><span>{t('inventory')}</span><NavigationFeedback /></Link>}
         </nav>
         <div className="workspace-sidebar-bottom">
           <Link href="/" target="_blank" rel="noopener noreferrer">

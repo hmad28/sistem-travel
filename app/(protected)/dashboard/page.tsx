@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { ArrowRight, CalendarDays, FileCheck2, UsersRound, WalletCards, Plus } from 'lucide-react';
+import { ArrowRight, CalendarDays, FileCheck2, UsersRound, WalletCards, Plus, PackageOpen } from 'lucide-react';
 import { PageShell } from '@/components/layout';
 import { Link } from '@/i18n/navigation';
 import { requireOrganizationContext } from '@/lib/auth/organization-context';
@@ -10,9 +10,14 @@ import { hasSessionPermission } from '@/lib/auth/permissions';
 export default async function DashboardPage() {
   const { organizationId, organization, user } = await requireOrganizationContext();
   const t = await getTranslations('travelSimple');
+  const inventory = await getTranslations('inventory');
   if (!hasSessionPermission(user, 'report', 'view', organizationId)) return <p>{t('denied')}</p>;
   const data = await getDashboardData(organizationId);
   const tasks = [
+    ...(hasSessionPermission(user, 'inventory', 'view', organizationId) ? [{
+      title: inventory('lowItems'), hint: inventory('lowHelp'), value: String(data.lowStockItems),
+      detail: null, href: '/admin/manajemen/stok?status=low', icon: PackageOpen,
+    }] : []),
     {
       title: t('dueTitle'),
       hint: t('dueHint'),

@@ -1,4 +1,6 @@
 {
+  "inventory": {"title":"Equipment stock","description":"Record actual receipts and handovers. Balances follow the movement history.","name":"Item name","unit":"Unit","defaultUnit":"piece","minimum":"Minimum stock","balance":"Available stock","status":"Status","detail":"View details","create":"Add item","edit":"Edit item information","archive":"Archive item","restore":"Reactivate","movement":"Record stock movement","template":"Prepare 10 Umrah equipment items","templateHelp":"Adds the equipment list with zero stock. Existing items are not overwritten or duplicated. Record stock receipts using actual quantities.","itemHelp":"Stock is not edited here. Use stock movements to keep balances and history consistent.","archiveHelp":"Archive hides an item from active lists while preserving history. Stock must be zero.","restoreHelp":"The item will return to active lists. Existing history is preserved.","kind":"Movement type","IN":"Stock received","OUT":"Stock issued","ADJUST":"Set physical count","quantity":"Quantity","actualCount":"Counted physical quantity","date":"Event date","note":"Reason / recipient","noteHint":"Example: received from supplier or handed to a named pilgrim.","adjustHelp":"Enter the actual physical count, not the difference. A reason is required.","movementHelp":"Record each receipt or handover once.","balancePreview":"Stock: {before} → {after} {unit}","confirmMovement":"I have checked the quantity and description.","saved":"Changes saved.","saving":"Saving…","viewRecord":"View updated record","denied":"You do not have equipment stock access.","invalid":"Check fields: whole quantities, a valid date, and a description of at least 3 characters.","failed":"Changes were not saved. Retry with the same input.","insufficient":"Insufficient stock. Reload for the latest balance.","unchanged":"Quantity has not changed. No movement is needed.","future":"Event date cannot be in the future.","stale":"Stock or item information changed. Reload before saving.","duplicate":"This request was used for another change. Reload the page.","notFound":"Item not found in your organization.","archived":"Archived","archiveNonzero":"This item still has stock. Resolve or reconcile the physical inventory before archiving.","active":"Active items","low":"Needs replenishment","available":"Available","activeItems":"Active item types","lowItems":"Items at minimum stock","lowHelp":"View items needing replenishment.","search":"Search item name","show":"Show","filter":"Apply filters","empty":"No matching items. Add an item or use the Umrah equipment list.","pagination":"List pagination","page":"Page {page}","previous":"Previous","next":"Next","back":"Back to stock list","history":"Stock movement history","historyHelp":"Ordered by recording time. Event dates may differ. Correct mistakes with a new movement, not by deleting history.","change":"Change","before":"Stock before","after":"Stock after","noHistory":"No stock movements yet."},
+  "booking": {"select":"Package & pilgrim","pricing":"Price & first invoice","payer":"Payer details","review":"Review registration","basePrice":"Agreed base price","discount":"Discount","additionalFee":"Additional fee","dpTarget":"Deposit target","initialInvoiceAmount":"First invoice amount","roomType":"Room type","QUAD":"Quad · 4 people","TRIPLE":"Triple · 3 people","DOUBLE":"Double · 2 people","priceHelp":"The price starts from the package. Adjust it for an agreed special price. All amounts are per pilgrim.","priceInvalid":"Check amounts: positive price, discount no higher than base, and deposit and invoice no higher than total.","total":"Agreed registration total","due":"Settlement deadline (30 days before departure)","payerName":"Payer name","payerPhone":"Payer WhatsApp","copyPayer":"Copy pilgrim details","addPilgrim":"Missing pilgrim? Add a pilgrim","openBooking":"Open registration details","invoiceHelp":"Saving issues the first invoice; it does not record cash received. Record payment only after receiving funds. The remaining agreed price stays receivable even before invoicing.","confirm":"I have checked the price, pilgrim, payer, and schedule.","next":"Next","save":"Save & issue invoice","saving":"Saving registration…","paid":"Payments received","outstanding":"Outstanding settlement","issued":"Total invoiced","unbilled":"Not yet invoiced","issue":"Issue next invoice","amount":"Invoice amount","dueDate":"Invoice due date","issueHelp":"The maximum is the agreed price not already invoiced. Unpaid invoices are included.","pay":"Record payment","invoices":"Invoice history","detail":"Registration details","UNPAID":"Unpaid","DP":"Deposit","INSTALLMENT":"Installments","PAID":"Paid","REFUND":"Refund","CANCELLED":"Cancelled"},
   "traffic": {
     "title":"Website visitor statistics", "description":"Monitor public website visits. Updates automatically every 30 seconds.",
     "refresh":"Refresh", "loading":"Loading visits…", "error":"Visit data could not be loaded.", "retry":"Try again", "stale":"Refresh failed. Showing the last successfully loaded data.",
@@ -91,6 +93,15 @@
     "read": "Read more"
   },
   "workflow": {
+    "invoiceLimit": "The invoice or deposit exceeds the remaining agreed price.",
+    "dueDateLimit": "Invoice due date must not exceed the settlement deadline.",
+    "basePrice": "Agreed price",
+    "dpTarget": "Deposit target",
+    "initialInvoiceAmount": "First invoice amount",
+    "payerName": "Payer name",
+    "payerPhone": "Payer WhatsApp",
+    "roomType": "Room type",
+    "requestId": "Request identifier; reload the page if invalid",
     "departureLimit": "Showing up to 100 latest departures.",
     "seatsFull": "Fully booked",
     "closed": "Close registration",
@@ -382,7 +393,7 @@
     "dueHint": "Check remaining payments and follow up with pilgrims.",
     "docsTitle": "Incomplete documents",
     "docsHint": "Review documents that have not been approved.",
-    "countInvoices": "{count} invoices",
+    "countInvoices": "{count} pilgrims with outstanding balances",
     "countRecords": "{count} registrations",
     "nextDeparture": "Next departure",
     "noDeparture": "No upcoming departure.",
@@ -430,6 +441,7 @@
     "connectedDescription": "Published packages share the same data as internal management."
   },
   "workspace": {
+    "inventory": "Equipment stock",
     "cms": "Website CMS",
     "internal": "Internal Management",
     "internalShort": "Internal",

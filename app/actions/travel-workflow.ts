@@ -20,11 +20,13 @@ import {
 import { requireOrganizationContext } from '@/lib/auth/organization-context';
 import { hasSessionPermission } from '@/lib/auth/permissions';
 import { occupiedSeats } from '@/lib/travel/seat-capacity';
+import { agreedPrice, settlementDate, remainingBillable } from '@/lib/travel/booking-finance';
 import {
   packageEditorSchema,
   departureEditorSchema,
   registrationEditorSchema,
   paymentEditorSchema,
+  installmentInvoiceSchema,
 } from '@/lib/validation/travel-workflow';
 
 export type WorkflowKind = 'package' | 'departure' | 'registration' | 'payment';
@@ -184,7 +186,17 @@ export async function saveTravelWorkflow(
           .from(departures)
           .where(and(eq(departures.id, data.departureId), eq(departures.organizationId, org)))
           .for('update');
+        const [existingRegistration] = await tx.select().from(registrations).where(and(
+          eq(registrations.id, data.requestId), eq(registrations.organizationId, org)
+        ));
+        if (existingRegistration) {
+          if (existingRegistration.pilgrimId !== data.pilgrimId || existingRegistration.departureId !== data.departureId)
+            throw new WorkflowError('notFound');
+          destination = `/admin/manajemen/pendaftaran/${existingRegistration.id}`;
+          return;
+        }
         if (!departure || departure.status !== 'OPEN') throw new WorkflowError('departureClosed');
+        if (departure.departureDate < today()) throw new WorkflowError('departureClosed');
         const [person] = await tx
           .select()
           .from(pilgrims)
@@ -230,17 +242,23 @@ export async function saveTravelWorkflow(
           departure.quota
         )
           throw new WorkflowError('full');
-        const finalPrice = pkg.startingPrice - data.discount + data.additionalFee;
-        if (finalPrice <= 0) throw new WorkflowError('invalidPrice');
+        if (data.discount > data.basePrice) throw new WorkflowError('invalidPrice');
+        const finalPrice = agreedPrice(data.basePrice, data.discount, data.additionalFee);
+        if (data.dpTarget > finalPrice || data.initialInvoiceAmount > finalPrice)
+          throw new WorkflowError('invoiceLimit');
+        const due = settlementDate(departure.departureDate);
+        const { requestId, initialInvoiceAmount, ...registrationData } = data;
         const [registration] = await tx
           .insert(registrations)
           .values({
-            ...data,
+            ...registrationData,
+            id: requestId,
             organizationId: org,
             registrationNumber: number('REG'),
             registrationDate: today(),
             registrationStatus: 'REGISTERED',
-            basePrice: pkg.startingPrice,
+            basePrice: data.basePrice,
+            settlementDueDate: due,
             finalPrice,
             createdBy: context.user.id,
           })
@@ -251,18 +269,26 @@ export async function saveTravelWorkflow(
             organizationId: org,
             registrationId: registration.id,
             invoiceNumber: number('INV'),
-            customerName: person.fullName,
+            customerName: data.payerName,
             issueDate: today(),
-            subtotal: pkg.startingPrice,
-            discount: data.discount,
-            additionalFee: data.additionalFee,
-            total: finalPrice,
-            outstandingAmount: finalPrice,
+            dueDate: today(),
+            subtotal: initialInvoiceAmount,
+            total: initialInvoiceAmount,
+            outstandingAmount: initialInvoiceAmount,
             status: 'UNPAID',
             snapshot: {
               packageName: pkg.name,
               departureDate: departure.departureDate,
               registrationNumber: registration.registrationNumber,
+              pilgrimName: person.fullName,
+              payerName: data.payerName,
+              payerPhone: data.payerPhone,
+              agreedPrice: finalPrice,
+              basePrice: data.basePrice,
+              discount: data.discount,
+              dpTarget: data.dpTarget,
+              settlementDueDate: due,
+              roomType: data.roomType,
             },
             createdBy: context.user.id,
           })
@@ -271,8 +297,8 @@ export async function saveTravelWorkflow(
           invoiceId: invoice.id,
           description: pkg.name,
           quantity: 1,
-          unitPrice: pkg.startingPrice,
-          amount: pkg.startingPrice,
+          unitPrice: initialInvoiceAmount,
+          amount: initialInvoiceAmount,
         });
         await tx
           .update(departures)
@@ -283,7 +309,7 @@ export async function saveTravelWorkflow(
           })
           .where(eq(departures.id, departure.id));
         recordId = registration.id;
-        destination = '/travel/pembayaran';
+        destination = `/admin/manajemen/pendaftaran/${registration.id}`;
       } else {
         const data = paymentEditorSchema.parse(raw);
         const [invoice] = await tx
@@ -371,6 +397,62 @@ export async function saveTravelWorkflow(
         ),
       };
     console.error('[TRAVEL_WORKFLOW]', error);
+    return { ok: false, message: t('failed') };
+  }
+}
+
+export async function issueInstallmentInvoice(
+  _previous: WorkflowState, form: FormData
+): Promise<WorkflowState> {
+  const t = await getTranslations('workflow');
+  try {
+    const context = await requireOrganizationContext();
+    const org = context.organizationId;
+    if (!hasSessionPermission(context.user, 'finance', 'create', org))
+      return { ok: false, message: t('denied') };
+    const data = installmentInvoiceSchema.parse(Object.fromEntries(form));
+    await db.transaction(async tx => {
+      const [registration] = await tx.select().from(registrations).where(and(
+        eq(registrations.id, data.registrationId), eq(registrations.organizationId, org)
+      )).for('update');
+      if (!registration || ['DRAFT', 'CANCELLED', 'REFUNDED', 'REJECTED'].includes(registration.registrationStatus))
+        throw new WorkflowError('notFound');
+      const bills = await tx.select().from(invoices).where(and(
+        eq(invoices.registrationId, registration.id), eq(invoices.organizationId, org)
+      ));
+      if (bills.some(bill => bill.id === data.requestId)) return;
+      const issued = bills.filter(bill => !['VOID', 'DRAFT'].includes(bill.status) && !bill.voidedAt)
+        .reduce((sum, bill) => sum + bill.total, 0);
+      if (issued > registration.finalPrice || data.amount > remainingBillable(registration.finalPrice, issued))
+        throw new WorkflowError('invoiceLimit');
+      if (registration.settlementDueDate && data.dueDate > registration.settlementDueDate)
+        throw new WorkflowError('dueDateLimit');
+      const original = bills.find(bill => bill.snapshot.packageName);
+      const [person] = await tx.select().from(pilgrims).where(and(
+        eq(pilgrims.id, registration.pilgrimId), eq(pilgrims.organizationId, org)
+      ));
+      if (!person) throw new WorkflowError('notFound');
+      const [invoice] = await tx.insert(invoices).values({
+        id: data.requestId, organizationId: org, registrationId: registration.id,
+        invoiceNumber: number('INV'), customerName: registration.payerName || person.fullName,
+        issueDate: today(), dueDate: data.dueDate, subtotal: data.amount, total: data.amount,
+        outstandingAmount: data.amount, status: 'UNPAID', createdBy: context.user.id,
+        snapshot: { ...original?.snapshot, agreedPrice: registration.finalPrice,
+          registrationNumber: registration.registrationNumber, settlementDueDate: registration.settlementDueDate },
+      }).returning();
+      await tx.insert(invoiceItems).values({ invoiceId: invoice.id,
+        description: String(original?.snapshot.packageName ?? registration.registrationNumber),
+        quantity: 1, unitPrice: data.amount, amount: data.amount });
+      await tx.insert(auditLogs).values({ actorId: context.user.id, action: 'invoice.issue',
+        resource: 'finance', resourceId: invoice.id, message: 'Installment invoice issued',
+        metadata: { organizationId: org, registrationId: registration.id, amount: data.amount } });
+    });
+    revalidatePath('/', 'layout');
+    return { ok: true, message: t('saved'), href: `/admin/manajemen/pendaftaran/${data.registrationId}` };
+  } catch (error) {
+    if (error instanceof WorkflowError) return { ok: false, message: t(error.message as 'notFound') };
+    if (error && typeof error === 'object' && 'issues' in error) return { ok: false, message: t('invalid') };
+    console.error('[ISSUE_INVOICE]', error);
     return { ok: false, message: t('failed') };
   }
 }

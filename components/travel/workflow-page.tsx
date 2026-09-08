@@ -10,6 +10,7 @@ import { requireOrganizationContext } from '@/lib/auth/organization-context';
 import { hasSessionPermission } from '@/lib/auth/permissions';
 import { PageShell } from '@/components/layout';
 import { WorkflowForm, type EditorField } from './workflow-form';
+import { RegistrationWizard, type RegistrationOptions } from './registration-wizard';
 import type { WorkflowKind } from '@/app/actions/travel-workflow';
 import { formatIdr } from '@/lib/travel/format';
 
@@ -28,6 +29,7 @@ export async function WorkflowPage({ kind, id = '' }: { kind: WorkflowKind; id?:
     return <p>{t('denied')}</p>;
   let fields: EditorField[] = [];
   let prerequisite = '';
+  let registrationOptions: RegistrationOptions | undefined;
   const option = (value: string, label: string) => ({ value, label });
   if (kind === 'package') {
     const [record] = id
@@ -162,6 +164,8 @@ export async function WorkflowPage({ kind, id = '' }: { kind: WorkflowKind; id?:
       .orderBy(asc(departures.departureDate));
     if (!people.length) prerequisite = '/travel/jamaah/baru';
     else if (!schedules.length) prerequisite = '/admin/manajemen/keberangkatan/baru';
+    registrationOptions = { requestId: randomUUID(), people: people.map(p => ({ id: p.id, fullName: p.fullName, phone: p.phone })),
+      schedules: schedules.map(({ departure: d, package: p }) => ({ id: d.id, name: p.name, date: d.departureDate, price: p.startingPrice })) };
     fields = [
       {
         name: 'pilgrimId',
@@ -228,7 +232,7 @@ export async function WorkflowPage({ kind, id = '' }: { kind: WorkflowKind; id?:
             {t('prepareData')}
           </Link>
         </div>
-      ) : (
+      ) : registrationOptions ? <RegistrationWizard {...registrationOptions} /> : (
         <WorkflowForm
           kind={kind}
           fields={fields}

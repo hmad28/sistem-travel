@@ -8,6 +8,7 @@ import {
   pilgrims,
   registrations,
   travelPackages,
+  stockItems,
 } from '@/db/schema';
 
 const activeRegistrationStatuses = [
@@ -25,7 +26,7 @@ export async function getDashboardData(organizationId: string) {
     day: '2-digit',
   }).format(new Date());
 
-  const [pilgrimSummary, departureSummary, financeSummary, documentSummary, nearestRows] =
+  const [pilgrimSummary, departureSummary, financeSummary, documentSummary, nearestRows, inventorySummary] =
     await Promise.all([
       readDb
         .select({ total: sql<number>`count(*)::int` })
@@ -41,20 +42,17 @@ export async function getDashboardData(organizationId: string) {
             gt(departures.departureDate, today)
           )
         ),
-      readDb
-        .select({
-          total: sql<number>`coalesce(sum(${invoices.total}), 0)::bigint`,
-          paid: sql<number>`coalesce(sum(${invoices.paidAmount}), 0)::bigint`,
-          outstanding: sql<number>`coalesce(sum(${invoices.outstandingAmount}), 0)::bigint`,
-          unpaidPilgrims: sql<number>`count(*) filter (where ${invoices.outstandingAmount} > 0)::int`,
-        })
-        .from(invoices)
-        .where(
-          and(
-            eq(invoices.organizationId, organizationId),
-            inArray(invoices.status, ['ISSUED', 'UNPAID', 'PARTIAL', 'PAID', 'OVERDUE'])
-          )
-        ),
+      readDb.execute<{ total: string; paid: string; outstanding: string; unpaidPilgrims: number }>(sql`
+        select coalesce(sum(r.final_price),0)::text as total,
+          coalesce(sum(coalesce(i.paid,0)),0)::text as paid,
+          coalesce(sum(greatest(0,r.final_price-coalesce(i.paid,0))),0)::text as outstanding,
+          count(distinct r.pilgrim_id) filter (where r.final_price>coalesce(i.paid,0))::int as "unpaidPilgrims"
+        from ${registrations} r
+        left join (select registration_id, sum(paid_amount) as paid from ${invoices}
+          where organization_id=${organizationId} and status not in ('VOID','DRAFT') and voided_at is null
+          group by registration_id) i on i.registration_id=r.id
+        where r.organization_id=${organizationId} and r.registration_status not in ('DRAFT','CANCELLED','REFUNDED','REJECTED')
+      `),
       readDb
         .select({
           total: sql<number>`count(*)::int`,
@@ -88,6 +86,10 @@ export async function getDashboardData(organizationId: string) {
         )
         .orderBy(asc(departures.departureDate))
         .limit(1),
+      readDb.select({ low: sql<number>`count(*)::int` }).from(stockItems).where(and(
+        eq(stockItems.organizationId, organizationId), isNull(stockItems.archivedAt),
+        sql`${stockItems.quantity} <= ${stockItems.minimum}`
+      )),
     ]);
 
   const documentTotal = documentSummary[0]?.total ?? 0;
@@ -95,12 +97,13 @@ export async function getDashboardData(organizationId: string) {
 
   return {
     pilgrims: pilgrimSummary[0]?.total ?? 0,
+    lowStockItems: inventorySummary[0]?.low ?? 0,
     activeDepartures: departureSummary[0]?.total ?? 0,
     finance: {
-      total: Number(financeSummary[0]?.total ?? 0),
-      paid: Number(financeSummary[0]?.paid ?? 0),
-      outstanding: Number(financeSummary[0]?.outstanding ?? 0),
-      unpaidPilgrims: financeSummary[0]?.unpaidPilgrims ?? 0,
+      total: Number(financeSummary.rows[0]?.total ?? 0),
+      paid: Number(financeSummary.rows[0]?.paid ?? 0),
+      outstanding: Number(financeSummary.rows[0]?.outstanding ?? 0),
+      unpaidPilgrims: financeSummary.rows[0]?.unpaidPilgrims ?? 0,
     },
     documents: {
       total: documentTotal,

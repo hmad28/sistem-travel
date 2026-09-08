@@ -36,6 +36,7 @@ export * from './departures';
 export * from './pilgrims';
 export * from './registrations';
 export * from './finance';
+export * from './inventory';
 export * from './pilgrim-documents';
 export * from './website-visits';
 
