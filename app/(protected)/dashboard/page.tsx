@@ -31,7 +31,7 @@ export default async function DashboardPage() {
       hint: t('docsHint'),
       value: t('countRecords', { count: data.documents.incomplete }),
       detail: null,
-      href: '/travel/operasional',
+      href: '/travel/jamaah',
       icon: FileCheck2,
     },
   ];

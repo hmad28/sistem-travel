@@ -12,11 +12,13 @@ export function SimpleRecords({
   rows,
   title,
   detailLinks,
+  detailKeyIndex = 0,
 }: {
   headers: string[];
   rows: string[][];
   title: string;
   detailLinks?: Record<string, string>;
+  detailKeyIndex?: number;
 }) {
   const t = useTranslations('travelSimple');
   const [query, setQuery] = useState('');
@@ -90,11 +92,11 @@ export function SimpleRecords({
                 <tr key={`${row[0]}-${rowIndex}`} className="hover:bg-slate-50">
                   {row.map((cell, index) => (
                     <td key={index} className="px-5 py-5">
-                      {index === 0 ? <strong className="font-semibold">{cell}</strong> : cell}
+                      {index === 0 ? detailLinks?.[row[detailKeyIndex]] ? <Link className="inline-flex min-h-11 items-center font-semibold text-primary underline underline-offset-4" href={detailLinks[row[detailKeyIndex]]}>{cell}</Link> : <strong className="font-semibold">{cell}</strong> : cell}
                     </td>
                   ))}
                   <td className="px-4">
-                    {detailLinks?.[row[0]] ? <Link href={detailLinks[row[0]]} className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap font-semibold text-primary">{t('details')}<ChevronRight className="size-4" /></Link> : <button
+                    {detailLinks?.[row[detailKeyIndex]] ? <Link href={detailLinks[row[detailKeyIndex]]} className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap font-semibold text-primary">{t('details')}<ChevronRight className="size-4" /></Link> : <button
                       className="inline-flex min-h-11 items-center gap-1 whitespace-nowrap font-semibold text-primary"
                       onClick={() => setSelected(row)}
                     >

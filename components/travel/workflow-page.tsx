@@ -14,7 +14,7 @@ import { RegistrationWizard, type RegistrationOptions } from './registration-wiz
 import type { WorkflowKind } from '@/app/actions/travel-workflow';
 import { formatIdr } from '@/lib/travel/format';
 
-export async function WorkflowPage({ kind, id = '' }: { kind: WorkflowKind; id?: string }) {
+export async function WorkflowPage({ kind, id = '', invoiceId = '' }: { kind: WorkflowKind; id?: string; invoiceId?:string }) {
   const t = await getTranslations('workflow');
   const context = await requireOrganizationContext();
   const org = context.organizationId;
@@ -201,6 +201,7 @@ export async function WorkflowPage({ kind, id = '' }: { kind: WorkflowKind; id?:
       { name: 'requestId', type: 'hidden', value: randomUUID() },
       {
         name: 'invoiceId',
+        value: bills.some(b=>b.id===invoiceId) ? invoiceId : '',
         required: true,
         options: bills.map((p) =>
           option(

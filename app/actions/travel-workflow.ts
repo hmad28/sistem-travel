@@ -324,7 +324,8 @@ export async function saveTravelWorkflow(
           .from(payments)
           .where(and(eq(payments.id, data.requestId), eq(payments.organizationId, org)));
         if (already) {
-          destination = '/travel/pembayaran';
+          const [existingReceipt] = await tx.select({id:receipts.id}).from(receipts).where(and(eq(receipts.paymentId,already.id),eq(receipts.organizationId,org)));
+          destination = existingReceipt ? `/admin/manajemen/kwitansi/${existingReceipt.id}` : '/admin/manajemen/kwitansi';
           return;
         }
         if (data.amount > invoice.outstandingAmount) throw new WorkflowError('overpayment');
@@ -357,7 +358,7 @@ export async function saveTravelWorkflow(
             updatedAt: new Date(),
           })
           .where(eq(invoices.id, invoice.id));
-        await tx.insert(receipts).values({
+        const [receipt] = await tx.insert(receipts).values({
           organizationId: org,
           paymentId: payment.id,
           receiptNumber: number('KWT'),
@@ -369,9 +370,9 @@ export async function saveTravelWorkflow(
             method: data.method,
             paidDate: data.paidDate,
           },
-        });
+        }).returning({id:receipts.id});
         recordId = payment.id;
-        destination = '/travel/pembayaran';
+        destination = `/admin/manajemen/kwitansi/${receipt.id}`;
       }
       await tx.insert(auditLogs).values({
         actorId: context.user.id,

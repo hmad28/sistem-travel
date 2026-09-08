@@ -11,7 +11,6 @@ import {
   CalendarDays,
   UsersRound,
   WalletCards,
-  PlaneTakeoff,
   Settings2,
   Palette,
   PackageOpen,
@@ -37,6 +36,7 @@ export function TravelWorkspace({
   const t = useTranslations('workspace');
   const c = useTranslations('contentEditor');
   const w = useTranslations('workflow');
+  const u = useTranslations('internalUx');
   const [open, setOpen] = useState(false);
   const canPilgrims = usePermission('pilgrim', 'view');
   const canDepartures = usePermission('departure', 'view');
@@ -53,9 +53,11 @@ export function TravelWorkspace({
     ? ([
         ['/admin/manajemen', 'overview', LayoutDashboard],
         ['/travel/jamaah', 'pilgrims', UsersRound],
+        ['/admin/manajemen/pendaftaran', 'registrations', UsersRound],
         ['/admin/manajemen/keberangkatan', 'departures', CalendarDays],
-        ['/travel/operasional', 'operations', PlaneTakeoff],
         ['/travel/pembayaran', 'payments', WalletCards],
+        ['/admin/manajemen/kwitansi', 'receipts', WalletCards],
+        ['/admin/manajemen/stok', 'inventory', PackageOpen],
         ['/admin/manajemen/pengaturan', 'settings', Settings2],
       ] as const)
     : ([
@@ -99,13 +101,16 @@ export function TravelWorkspace({
             <Building2 /> {t('internalShort')} <NavigationFeedback />
           </Link>
         </div>
-        <p className="workspace-section-label">{t(internal ? 'business' : 'content')}</p>
+        {!internal && <p className="workspace-section-label">{t('content')}</p>}
         <nav aria-label={t(internal ? 'internal' : 'cms')}>
           {entries
             .filter(([, key]) =>
               key === 'payments'
                 ? canFinance
-                : key === 'pilgrims' || key === 'operations'
+                : key === 'receipts' ? canFinance
+                : key === 'registrations' ? canRegistration
+                : key === 'inventory' ? canInventory
+                : key === 'pilgrims'
                   ? canPilgrims
                   : key === 'departures'
                     ? canDepartures
@@ -121,17 +126,19 @@ export function TravelWorkspace({
                     ? path === href || path === '/dashboard'
                     : path === href || path.startsWith(`${href}/`);
               return (
+                <div key={href}>
+                {internal && <>{key==='overview'?<p className="workspace-section-label">{u('main')}</p>:key==='pilgrims'?<p className="workspace-section-label border-t pt-5 mt-4">{u('people')}</p>:key==='payments'?<p className="workspace-section-label border-t pt-5 mt-4">{u('finance')}</p>:key==='inventory'?<p className="workspace-section-label border-t pt-5 mt-4">{u('operations')}</p>:key==='settings'?<p className="workspace-section-label border-t pt-5 mt-4">{u('settings')}</p>:null}</>}
                 <Link
-                  key={href}
                   href={href}
                   onClick={() => setOpen(false)}
                   aria-current={active ? 'page' : undefined}
                 >
                   <Icon />
-                  <span>{t(key)}</span>
+                  <span>{key==='registrations'?w('registrationsTitle'):key==='receipts'?w('receiptsTitle'):key==='payments'?u('invoice'):t(key)}</span>
                   <NavigationFeedback />
                   {active && <span className="workspace-active-dot" />}
                 </Link>
+                </div>
               );
             })}
           {!internal &&
@@ -150,29 +157,6 @@ export function TravelWorkspace({
                 </Link>
               )
             )}
-          {internal && canRegistration && (
-            <Link
-              href="/admin/manajemen/pendaftaran"
-              onClick={() => setOpen(false)}
-              aria-current={path.startsWith('/admin/manajemen/pendaftaran') ? 'page' : undefined}
-            >
-              <UsersRound />
-              <span>{w('registrationsTitle')}</span>
-              <NavigationFeedback />
-            </Link>
-          )}
-          {internal && canFinance && (
-            <Link
-              href="/admin/manajemen/kwitansi"
-              onClick={() => setOpen(false)}
-              aria-current={path.startsWith('/admin/manajemen/kwitansi') ? 'page' : undefined}
-            >
-              <WalletCards />
-              <span>{w('receiptsTitle')}</span>
-              <NavigationFeedback />
-            </Link>
-          )}
-          {internal && canInventory && <Link href="/admin/manajemen/stok" onClick={() => setOpen(false)} aria-current={path.startsWith('/admin/manajemen/stok') ? 'page' : undefined}><PackageOpen /><span>{t('inventory')}</span><NavigationFeedback /></Link>}
         </nav>
         <div className="workspace-sidebar-bottom">
           <Link href="/" target="_blank" rel="noopener noreferrer">

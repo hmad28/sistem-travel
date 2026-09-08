@@ -132,6 +132,13 @@ body {
   letter-spacing: 1.7px;
   font-weight: 700;
 }
+@media print {
+  body:has([data-finance-document]) * { visibility: hidden; }
+  body [data-finance-document], body [data-finance-document] * { visibility: visible; }
+  body:has([data-finance-document]) .workspace-sidebar,
+  body:has([data-finance-document]) .workspace-topbar { display: none; }
+  body:has([data-finance-document]) .workspace-main { margin: 0; padding: 0; }
+}
 .workspace-sidebar nav {
   padding: 0 16px;
   overflow-y: auto;

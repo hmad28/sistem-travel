@@ -1,2 +1,2 @@
 import { WorkflowPage } from '@/components/travel/workflow-page';
-export default function Page() { return <WorkflowPage kind="payment" />; }
+export default async function Page({searchParams}:{searchParams:Promise<{invoice?:string}>}) { const {invoice}=await searchParams; return <WorkflowPage kind="payment" invoiceId={invoice} />; }

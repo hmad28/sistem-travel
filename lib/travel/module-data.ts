@@ -114,6 +114,7 @@ export async function getInvoiceRows(organizationId: string, query?: string) {
   const rows = await readDb
     .select({
       invoiceNumber: invoices.invoiceNumber,
+      id: invoices.id,
       customerName: invoices.customerName,
       total: invoices.total,
       paidAmount: invoices.paidAmount,

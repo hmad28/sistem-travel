@@ -7,6 +7,9 @@ import { requireOrganizationContext } from '@/lib/auth/organization-context';
 import { getDepartureRows, getInvoiceRows, getPilgrimRows } from '@/lib/travel/module-data';
 import { SimpleRecords } from '@/components/travel/simple-records';
 import { hasSessionPermission } from '@/lib/auth/permissions';
+import { readDb } from '@/db/read';
+import { invoices } from '@/db/schema';
+import { eq } from 'drizzle-orm';
 
 export default async function TravelModulePage({
   params,
@@ -14,6 +17,7 @@ export default async function TravelModulePage({
   params: Promise<{ module: string }>;
 }) {
   const { module } = await params;
+  if (module === 'operasional') redirect('/travel/jamaah');
   if (module === 'keberangkatan') redirect('/admin/manajemen/keberangkatan');
   if (module === 'website') redirect('/admin');
   if (module === 'laporan') redirect('/travel/pembayaran');
@@ -21,8 +25,10 @@ export default async function TravelModulePage({
   const { organizationId, organization, user } = await requireOrganizationContext();
   const t = await getTranslations('travelSimple');
   const w = await getTranslations('workflow');
+  const u = await getTranslations('internalUx');
   const resource = module === 'pembayaran' ? 'finance' : module === 'keberangkatan' ? 'departure' : 'pilgrim';
   if (!hasSessionPermission(user, resource, 'view', organizationId)) return <p>{t('denied')}</p>;
+  const bills = module === 'pembayaran' ? await readDb.select({id:invoices.id,number:invoices.invoiceNumber}).from(invoices).where(eq(invoices.organizationId,organizationId)) : [];
   const pilgrims =
     module === 'jamaah' || module === 'operasional' ? await getPilgrimRows(organizationId) : [];
   const rows =
@@ -59,7 +65,8 @@ export default async function TravelModulePage({
           {t('demo')}
         </p>
       )}
-      <SimpleRecords title={t(module)} headers={headers.map((key) => t(key))} rows={rows} />
+      {module==='pembayaran'&&<div className="space-y-2 rounded-xl border bg-white p-5"><p className="font-semibold">{u('invoiceFlow')}</p><p>{u('invoiceHint')}</p></div>}
+      <SimpleRecords title={t(module)} headers={headers.map((key) => t(key))} rows={rows} detailLinks={Object.fromEntries(bills.map(b=>[b.number,`/admin/manajemen/invoice/${b.id}`]))} />
       <p className="text-sm text-muted-foreground">{t('limit')}</p>
     </PageShell>
   );
